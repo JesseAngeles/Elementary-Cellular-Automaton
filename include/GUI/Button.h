@@ -43,11 +43,16 @@ public:
 
     Vector2i getSize() const { return Vector2i(width, height); }
     Vector2f getRelativePosition() const { return relative_pos; }
+    Color getColor() const { return background_color; }
 
     // Setters
     void setTexture(std::string content);
     void setButtonFunction(std::function<void()> buttonFunction) { this->buttonFunction = buttonFunction; }
-    void setColor(Color color) { button.setFillColor(color); }
+    void setColor(Color color)
+    {
+        background_color = color;
+        button.setFillColor(background_color);
+    }
 };
 
 #endif // BUTTON_H

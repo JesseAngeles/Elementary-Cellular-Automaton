@@ -7,7 +7,7 @@ Button::Button(int width, int height, Vector2f relative_pos, Color background_co
     button = RectangleShape(Vector2f(width, height));
     button.setPosition(relative_pos);
     button.setOutlineThickness(2);
-    button.setOutlineColor(background_color);
+    button.setOutlineColor({0, 0, 0});
     button.setFillColor(background_color);
 
     if (texture.loadFromFile(content))
@@ -38,7 +38,6 @@ Button::Button(int width, int height, Vector2f relative_pos, Color background_co
     }
 }
 
-#include <iostream>
 void Button::triggerFunction(Vector2i pos)
 {
     if (relative_pos.x <= pos.x && pos.x <= relative_pos.x + width &&
@@ -50,8 +49,9 @@ void Button::triggerFunction(Vector2i pos)
 void Button::draw(RenderWindow &window)
 {
     window.draw(button);
-    if (!button.getTexture())
-        window.draw(text);
+    // window.draw(text);
+    // if (!button.getTexture())
+    //     window.draw(text);
 }
 
 void Button::setTexture(std::string content)

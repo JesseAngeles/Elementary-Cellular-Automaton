@@ -16,7 +16,7 @@ g++ -c -std=c++17 -I./include src/GUI/TextBox.cpp        -o build/TextBox.o
 # Enlazar los objetos y generar el ejecutable
 g++ build/main.o \
     build/ECA.o \
-    build/Grapher.o build/Frame.o build/Button.o \
+    build/Grapher.o build/Frame.o build/Button.o build/TextBox.o \
     -o build/main.exe \
     -Iinclude -lsfml-graphics -lsfml-window -lsfml-system
 

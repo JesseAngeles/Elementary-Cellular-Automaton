@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "Button.h"
+#include "TextBox.h"
 
 #define FONT_ROUTE "./resources/fonts/Roboto-Medium.ttf"
 
@@ -34,6 +35,8 @@ private:
     std::string font_route = FONT_ROUTE;
 
     bool is_running = false;
+    bool is_rule_text_box_selected = false;
+
     float delta_time = 0.0;
     float speed = 500;
 
@@ -47,7 +50,8 @@ private:
     std::vector<VertexArray> axes;
     std::vector<VertexArray> lines;
 
-    // Text
+    std::vector<RectangleShape> black;
+    std::vector<RectangleShape> white;
 
     // Buttons
     Button start_button;
@@ -58,6 +62,11 @@ private:
     Button random_button;
     Button one_button;
 
+    std::vector<Button> squares;
+
+    // TextBox
+    TextBox rule_text_box;
+
     // Functions
     void startFunction();
     void increaseSpeedFunction();
@@ -66,6 +75,17 @@ private:
     void resetFunction();
     void randomFunction();
     void oneFunction();
+
+    void setRuleFunction();
+
+    void switchRule1();
+    void switchRule2();
+    void switchRule3();
+    void switchRule4();
+    void switchRule5();
+    void switchRule6();
+    void switchRule7();
+    void switchRule8();
 
     // Rectangles (alive cells)
     std::vector<std::pair<RectangleShape, Vector2i>> rectangles;

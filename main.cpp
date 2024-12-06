@@ -13,7 +13,7 @@ void displayVector(const vector<bool> &);
 
 int main()
 {
-    Grapher gui(500, 500, "hola", {255, 255, 255});
+    Grapher gui(1500, 500, "hola", {255, 255, 255});
     gui.mainLoop();
 }
 
