@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "ECA/ElementaryCellularAutomaton.hpp"
+#include "GUI/Grapher.h"
 
 using namespace std;
 
@@ -11,6 +12,12 @@ vector<bool> getBinary(int &number, const int &vector_size);
 void displayVector(const vector<bool> &);
 
 int main()
+{
+    Grapher gui(500, 500, "hola", {255, 255, 255});
+    gui.mainLoop();
+}
+
+int main1()
 {
     int number;
     cout << "Numero en decimal: ";
