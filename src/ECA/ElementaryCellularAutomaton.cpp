@@ -1,7 +1,8 @@
 #include "ECA/ElementaryCellularAutomaton.hpp"
 
-// Private functions
+// Constructor
 
+// Private functions
 bool ElementaryCellularAutomaton::apply(const std::array<bool, 3> &parents)
 {
     if (parents[0] && parents[1] && parents[2])

@@ -10,6 +10,8 @@
 #include "Button.h"
 #include "TextBox.h"
 
+#include "GUI/EvolutionFrame.h"
+
 #include "ECA/ElementaryCellularAutomaton.hpp"
 #include "Functions.h"
 
@@ -23,6 +25,8 @@
 #define RESET_ROUTE "./resources/images/reset.png"
 #define RANDOM_ROUTE "./resources/images/random.png"
 #define ONE_ROUTE "./resources/images/one.png"
+#define AXES_ON "./resources/images/axes_on.png"
+#define AXES_OFF "./resources/images/axes_off.png"
 
 using namespace sf;
 
@@ -46,9 +50,10 @@ private:
     std::vector<int> population;
 
     // Frames
+    EvolutionFrame evolution;
 
     // Classes
-    ElementaryCellularAutomaton eca;
+    ElementaryCellularAutomaton &eca;
 
     // Lines
     std::vector<VertexArray> axes;
@@ -65,11 +70,15 @@ private:
     Button reset_button;
     Button random_button;
     Button one_button;
+    Button axes_button;
 
     std::vector<Button> squares;
 
     // TextBox
     TextBox rule_text_box;
+
+    // Texts
+    Text generation_count;
 
     // Functions
     void startFunction();
@@ -79,6 +88,7 @@ private:
     void resetFunction();
     void randomFunction();
     void oneFunction();
+    void drawAxesFunction();
 
     void setRuleFunction();
 
@@ -99,7 +109,7 @@ private:
 
 public:
     // Constructor
-    Grapher(int width, int height, std::string tittle, Color background, ElementaryCellularAutomaton eca);
+    Grapher(int width, int height, std::string tittle, Color background, ElementaryCellularAutomaton &eca);
 
     RenderWindow window;
 

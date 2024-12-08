@@ -31,10 +31,12 @@ public:
 
     // Getters
     const std::vector<bool> getRule() const { return rule; }
+    const std::vector<bool> getSpace() const { return space; }
 
     // Setters
     void setRule(const std::vector<bool> &rule) { this->rule = rule; }
     void setSpace(const std::vector<bool> &space) { this->space = space; }
+    void switchCell(int pos) { space[pos] = !space[pos]; }
 
     // Displays
     void display();
