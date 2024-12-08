@@ -10,6 +10,9 @@
 #include "Button.h"
 #include "TextBox.h"
 
+#include "ECA/ElementaryCellularAutomaton.hpp"
+#include "Functions.h"
+
 #define FONT_ROUTE "./resources/fonts/Roboto-Medium.ttf"
 
 #define START_ROUTE "./resources/images/start.png"
@@ -45,7 +48,8 @@ private:
     // Frames
 
     // Classes
-    
+    ElementaryCellularAutomaton eca;
+
     // Lines
     std::vector<VertexArray> axes;
     std::vector<VertexArray> lines;
@@ -95,8 +99,7 @@ private:
 
 public:
     // Constructor
-    Grapher(int width, int height, std::string tittle, Color background);
-    void drawAxis();
+    Grapher(int width, int height, std::string tittle, Color background, ElementaryCellularAutomaton eca);
 
     RenderWindow window;
 

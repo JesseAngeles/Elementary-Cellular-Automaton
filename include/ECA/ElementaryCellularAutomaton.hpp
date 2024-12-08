@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 class ElementaryCellularAutomaton
 {
@@ -18,8 +19,8 @@ private:
 
 public:
     // Constructor
-    ElementaryCellularAutomaton(const std::vector<bool> &rule, int space_size)
-        : rule(rule), space(space_size, false) {};
+    ElementaryCellularAutomaton(const std::vector<bool> &rule, int space)
+        : rule(rule), space(space, false) {};
 
     // Functions
     void initRandom();
@@ -27,7 +28,7 @@ public:
 
     void step();
     void run(int steps, bool print = false);
-    
+
     // Getters
     const std::vector<bool> getRule() const { return rule; }
 

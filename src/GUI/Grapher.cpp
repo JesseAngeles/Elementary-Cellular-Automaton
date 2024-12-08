@@ -1,8 +1,8 @@
 #include "GUI/Grapher.h"
 
 // Constructor
-Grapher::Grapher(int width, int height, std::string tittle, Color backgroundColor)
-    : width(width), height(height), tittle(tittle), backgroundColor(backgroundColor),
+Grapher::Grapher(int width, int height, std::string tittle, Color backgroundColor, ElementaryCellularAutomaton eca)
+    : width(width), height(height), tittle(tittle), backgroundColor(backgroundColor), eca(eca),
       window(VideoMode(width, height), tittle, Style::Close),
 
       start_button(50, 50, Vector2f(10, 10), Color(0, 0, 0), START_ROUTE),
@@ -144,8 +144,9 @@ void Grapher::mainLoop()
 
             if (is_rule_text_box_selected && event.type == sf::Event::KeyPressed)
             {
-                if (event.key.code >= 26 && event.key.code <= 36)
-                    rule_text_box.getText().setString(rule_text_box.getText().getString() + std::to_string((event.key.code - 26) % 10));
+                std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+                if (event.key.code >= 26 && event.key.code <= 36 && rule_string.size() < 3)
+                    rule_text_box.getText().setString(rule_string + std::to_string((event.key.code - 26) % 10));
 
                 // backspace
                 if (event.key.code == 59)
@@ -159,12 +160,23 @@ void Grapher::mainLoop()
                 // Enter
                 if (event.key.code == 58)
                 {
-                    int rule = std::stoi(rule_text_box.getText().getString().toAnsiString());
+                    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+                    if (rule_string.empty())
+                        rule_string += '0';
+                    int rule = std::stoi(rule_string);
                     if (rule > 255)
                         rule = 255;
 
                     rule_text_box.getText().setString(std::to_string(rule));
                     is_rule_text_box_selected = false;
+
+                    eca.setRule(getBinary(rule, 8));
+                    std::vector<bool> eca_rule = eca.getRule();
+                    for (int i = 0; i < 8; i++)
+                        if (eca_rule[i])
+                            squares[i].setColor(Color::Black);
+                        else
+                            squares[i].setColor(Color::White);
                 }
             }
         }
@@ -265,58 +277,161 @@ void Grapher::setRuleFunction()
 
 void Grapher::switchRule1()
 {
-    if (squares[0].getColor() == Color::White)
-        squares[0].setColor(Color::Black);
-    else
-        squares[0].setColor(Color::White);
-}
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
 
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[0];
+    eca.setRule(rule_eca);
+
+    if (squares[0].getColor() == Color::White)
+    {
+        squares[0].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 128));
+    }
+    else
+    {
+        squares[0].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 128));
+    }
+}
 void Grapher::switchRule2()
 {
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
+
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[1];
+    eca.setRule(rule_eca);
+
     if (squares[1].getColor() == Color::White)
+    {
         squares[1].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 64));
+    }
     else
+    {
         squares[1].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 64));
+    }
 }
 void Grapher::switchRule3()
 {
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
+
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[2];
+    eca.setRule(rule_eca);
+
     if (squares[2].getColor() == Color::White)
+    {
         squares[2].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 32));
+    }
     else
+    {
         squares[2].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 32));
+    }
 }
 void Grapher::switchRule4()
 {
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
+
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[3];
+    eca.setRule(rule_eca);
+
     if (squares[3].getColor() == Color::White)
+    {
         squares[3].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 16));
+    }
     else
+    {
         squares[3].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 16));
+    }
 }
 void Grapher::switchRule5()
 {
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
+
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[4];
+    eca.setRule(rule_eca);
+
     if (squares[4].getColor() == Color::White)
+    {
         squares[4].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 8));
+    }
     else
+    {
         squares[4].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 8));
+    }
 }
 void Grapher::switchRule6()
 {
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
+
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[5];
+    eca.setRule(rule_eca);
+
     if (squares[5].getColor() == Color::White)
+    {
         squares[5].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 4));
+    }
     else
+    {
         squares[5].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 4));
+    }
 }
 void Grapher::switchRule7()
 {
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
+
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[6];
+    eca.setRule(rule_eca);
+
     if (squares[6].getColor() == Color::White)
+    {
         squares[6].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 2));
+    }
     else
+    {
         squares[6].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 2));
+    }
 }
 void Grapher::switchRule8()
 {
+    std::string rule_string = rule_text_box.getText().getString().toAnsiString();
+    int rule = std::stoi(rule_string);
+
+    std::vector<bool> rule_eca = eca.getRule();
+    rule_eca[0] = !rule_eca[7];
+    eca.setRule(rule_eca);
+
     if (squares[7].getColor() == Color::White)
+    {
         squares[7].setColor(Color::Black);
+        rule_text_box.setText(std::to_string(rule + 1));
+    }
     else
+    {
         squares[7].setColor(Color::White);
+        rule_text_box.setText(std::to_string(rule - 1));
+    }
 }
