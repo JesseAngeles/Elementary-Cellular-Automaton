@@ -32,10 +32,13 @@ void ElementaryCellularAutomaton::initRandom()
         space[i] = std::rand() % 2;
 }
 
-void ElementaryCellularAutomaton::initOne()
+int ElementaryCellularAutomaton::initOne()
 {
     space = std::vector(space.size(), false);
-    space[space.size() / 2] = true;
+    int pos = space.size() / 2;
+    space[pos] = true;
+
+    return pos;
 }
 
 void ElementaryCellularAutomaton::step()

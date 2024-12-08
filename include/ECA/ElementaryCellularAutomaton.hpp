@@ -24,7 +24,7 @@ public:
 
     // Functions
     void initRandom();
-    void initOne();
+    int initOne();
 
     void step();
     void run(int steps, bool print = false);

@@ -2,18 +2,14 @@
 
 // Constructor
 EvolutionFrame::EvolutionFrame(int width, int height, Vector2f relative_pos, Color background_color, ElementaryCellularAutomaton &eca)
-    : Frame(width, height, relative_pos, background_color), eca(eca), init_pos(0, 0)
+    : Frame(width, height, relative_pos, background_color), eca(eca)
 {
     y_scale = x_scale = static_cast<float>(width) / static_cast<float>(eca.getSpace().size());
 
     // Init axes
     initAxes();
 
-    // Init squares
-    std::vector<std::pair<RectangleShape, bool>> first_line;
-    for (int i = 0; i < eca.getSpace().size(); i++)
-        first_line.push_back(std::make_pair(drawRectangle(0, i, Color{255, 255, 255}), false));
-    evolution.push_back(first_line);
+
 }
 
 void EvolutionFrame::initAxes()
@@ -39,6 +35,69 @@ void EvolutionFrame::initAxes()
     }
 }
 
+// Private functions
+
+bool EvolutionFrame::shapeInFrame(const RectangleShape &shape)
+{
+    Vector2f shape_position = shape.getPosition();
+    if (relative_pos.x <= shape_position.x && shape_position.x <= relative_pos.x + width &&
+        relative_pos.y <= shape_position.y && shape_position.y < relative_pos.y + height - y_scale)
+        return true;
+
+    return false;
+}
+
+void EvolutionFrame::insertShape(const RectangleShape &shape)
+{
+    shapes.push_back(shape);
+    if (shapeInFrame(shape))
+        drawable_shapes.push_back(std::make_shared<RectangleShape>(shape));
+}
+
+// Public functions
+void EvolutionFrame::step()
+{
+    eca.step();
+    std::vector<bool> eca_space = eca.getSpace();
+
+    for (int i = 0; i < eca_space.size(); i++)
+        if (eca_space[i])
+            insertShape(drawRectangle(generation, i, color));
+
+    if (shapes.back().getPosition().y > relative_pos.y + height)
+        moveVertical(false);
+
+    generation++;
+}
+
+void EvolutionFrame::resetSpace()
+{
+    generation = 0;
+    shapes.clear();
+    drawable_shapes.clear();
+    eca.setSpace(std::vector<bool>(eca.getSpace().size(), false));
+
+    init_pos = Vector2f(0, 0);
+
+}
+
+void EvolutionFrame::randomSpace()
+{
+    eca.initRandom();
+    for (int i = 0; i < eca.getSpace().size(); i++)
+        if (eca.getSpace()[i])
+            insertShape(drawRectangle(generation, i, color));
+
+    generation++;
+}
+
+void EvolutionFrame::oneSpace()
+{
+    insertShape(drawRectangle(generation, eca.initOne(), color));
+
+    generation++;
+}
+
 // Drawers
 void EvolutionFrame::draw(RenderWindow &window)
 {
@@ -49,44 +108,31 @@ void EvolutionFrame::draw(RenderWindow &window)
         for (const VertexArray &axis : axes)
             window.draw(axis);
 
-    // Dibujar las figuras
-    for (const RectangleShape &shape : shapes)
-        window.draw(shape);
+    // Dibujar las figuras dentro del frame
+    for (const std::shared_ptr<RectangleShape> &shape : drawable_shapes)
+        window.draw(*shape);
 }
 
 RectangleShape EvolutionFrame::drawRectangle(int y, int x, Color color)
 {
     RectangleShape rectangle(Vector2f(x_scale, y_scale));
-    rectangle.setPosition({x * x_scale + relative_pos.x, y * y_scale + relative_pos.y});
+    rectangle.setPosition({x * x_scale + relative_pos.x, y * y_scale + relative_pos.y + init_pos.y});
     rectangle.setFillColor(color);
 
     return rectangle;
 }
 
-void EvolutionFrame::insertLine(std::vector<bool> new_line)
-{
-    std::vector<std::pair<RectangleShape, bool>> line;
-    for (int i = 0; i < new_line.size(); i++)
-    {
-        if (new_line[i])
-        {
-            shapes.push_back(drawRectangle(generation, i, Color(0, 0, 0)));
-            line.push_back(std::make_pair(drawRectangle(generation, i, {0, 0, 0}), new_line[i]));
-        }
-        else
-            line.push_back(std::make_pair(drawRectangle(generation, i, {255, 255, 255}), new_line[i]));
-    }
-    evolution.push_back(line);
-
-    generation++;
-}
-
 void EvolutionFrame::moveVertical(bool down)
 {
+    drawable_shapes.clear();
     float move = (down) ? y_scale : -y_scale;
-    for (std::vector<std::pair<RectangleShape, bool>> &line : evolution)
-        for (std::pair<RectangleShape, bool> &cell : line)
-            cell.first.move({0, move});
+
+    for (RectangleShape &shape : shapes)
+    {
+        shape.move({0, move});
+        if (shapeInFrame(shape))
+            drawable_shapes.push_back(std::make_shared<RectangleShape>(shape));
+    }
 
     init_pos.y += move;
 }
@@ -104,7 +150,7 @@ void EvolutionFrame::clickEvent(Vector2i pos)
     if (0 <= x_pos && x_pos <= eca.getSpace().size() - 1)
     {
         // Dibujar el cuadrado si se da click
-        RectangleShape new_shape = drawRectangle(0, x_pos, Color(0, 0, 0));
+        RectangleShape new_shape = drawRectangle(0, x_pos, color);
         bool found = false;
         for (std::vector<RectangleShape>::iterator it = shapes.begin(); it != shapes.end();)
             if (it->getPosition() == new_shape.getPosition())
@@ -117,18 +163,9 @@ void EvolutionFrame::clickEvent(Vector2i pos)
                 ++it;
 
         if (!found)
-            shapes.push_back(drawRectangle(0, x_pos, Color(0, 0, 0)));
-    
+            shapes.push_back(drawRectangle(0, x_pos, color));
+
         // Actualizar el espacio
         eca.switchCell(x_pos);
     }
-}
-
-std::vector<bool> EvolutionFrame::getEvolutionValues()
-{
-    std::vector<bool> init_space(evolution[generation - 1].size(), false);
-    for (int i = 0; i < evolution[generation - 1].size(); i++)
-        init_space[i] = evolution[generation - 1][i].second;
-
-    return init_space;
 }

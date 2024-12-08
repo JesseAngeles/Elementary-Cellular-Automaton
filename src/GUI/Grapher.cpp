@@ -195,19 +195,11 @@ void Grapher::mainLoop()
             }
 
             if (event.type == Event::MouseWheelScrolled && !is_running)
-            {
                 if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
-                { // Desplazamiento vertical
                     if (event.mouseWheelScroll.delta > 0)
-                    {
                         evolution.moveVertical(true);
-                    }
                     else if (event.mouseWheelScroll.delta < 0)
-                    {
                         evolution.moveVertical(false);
-                    }
-                }
-            }
         }
 
         delta_time += clock.restart().asMilliseconds();
@@ -282,26 +274,27 @@ void Grapher::decreaseSpeedFunction()
 
 void Grapher::stepFunction()
 {
-    eca.step();
-
+    evolution.step();
     generation_count.setString("Generation: " + std::to_string(evolution.getGenerationCount()));
-
-    evolution.insertLine(eca.getSpace());
 }
 
 void Grapher::resetFunction()
 {
     is_running = false;
     start_button.setTexture(START_ROUTE);
+    evolution.resetSpace();
+
+    generation_count.setString("Generation: 1");
 }
 
 void Grapher::randomFunction()
 {
+    evolution.randomSpace();
 }
 
 void Grapher::oneFunction()
 {
-    std::cout << "sasas";
+    evolution.oneSpace();
 }
 
 void Grapher::setRuleFunction()
