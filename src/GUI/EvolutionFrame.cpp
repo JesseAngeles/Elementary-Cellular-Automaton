@@ -109,6 +109,8 @@ void EvolutionFrame::adjustFrame(bool add)
     float last_y_scale = y_scale;
     x_scale = y_scale = static_cast<float>(width) / static_cast<float>(current_space.size());
     init_pos.y = (init_pos.y / last_y_scale) * y_scale;
+    init_pos.x = (init_pos.x / last_x_scale) * x_scale;
+    
 
     // Ajustar ejes
     axes.clear();
