@@ -43,14 +43,15 @@ public:
     void resetSpace();
     void randomSpace();
     void oneSpace();
+    void adjustFrame(bool add);
 
     // Drawers
     void draw(RenderWindow &window);
     RectangleShape drawRectangle(int y, int x, Color color);
 
     void moveVertical(bool down);
-    void zoom(bool in);
     void moveHorizontal(bool right);
+    void zoom(bool in);
 
     // Clicker functions
     void clickEvent(Vector2i position);

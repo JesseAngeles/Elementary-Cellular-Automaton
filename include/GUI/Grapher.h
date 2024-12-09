@@ -25,8 +25,10 @@
 #define RESET_ROUTE "./resources/images/reset.png"
 #define RANDOM_ROUTE "./resources/images/random.png"
 #define ONE_ROUTE "./resources/images/one.png"
-#define AXES_ON "./resources/images/axes_on.png"
-#define AXES_OFF "./resources/images/axes_off.png"
+#define AXES_ON_ROUTE "./resources/images/axes_on.png"
+#define AXES_OFF_ROUTE "./resources/images/axes_off.png"
+#define EXPAND_ROUTE "./resources/images/expand.png"
+#define CONTRACT_ROUTE "./resources/images/contract.png"  
 
 using namespace sf;
 
@@ -71,6 +73,8 @@ private:
     Button random_button;
     Button one_button;
     Button axes_button;
+    Button expand_button;
+    Button contract_button;
 
     std::vector<Button> squares;
 
@@ -89,6 +93,8 @@ private:
     void randomFunction();
     void oneFunction();
     void drawAxesFunction();
+    void expandFunction();
+    void contractFunction();
 
     void setRuleFunction();
 
