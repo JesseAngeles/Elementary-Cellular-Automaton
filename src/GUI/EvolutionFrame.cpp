@@ -8,8 +8,6 @@ EvolutionFrame::EvolutionFrame(int width, int height, Vector2f relative_pos, Col
 
     // Init axes
     initAxes();
-
-
 }
 
 void EvolutionFrame::initAxes()
@@ -78,7 +76,6 @@ void EvolutionFrame::resetSpace()
     eca.setSpace(std::vector<bool>(eca.getSpace().size(), false));
 
     init_pos = Vector2f(0, 0);
-
 }
 
 void EvolutionFrame::randomSpace()
@@ -138,34 +135,55 @@ void EvolutionFrame::moveVertical(bool down)
 }
 
 // Clicker function
-void EvolutionFrame::clickEvent(Vector2i pos)
+void EvolutionFrame::clickEvent(sf::Vector2i pos)
 {
+    if(generation == 0)
+        generation = 1;
+
+    // Verificar si el clic está dentro del marco
     if (pos.x <= relative_pos.x || pos.x >= relative_pos.x + width ||
         pos.y <= relative_pos.y || pos.y >= relative_pos.y + height)
         return;
 
+    // Calcular la posición en términos del espacio del autómata
     int x_pos = (pos.x - init_pos.x - relative_pos.x) / x_scale;
     int y_pos = (pos.y - init_pos.y - relative_pos.y) / y_scale;
 
-    if (0 <= x_pos && x_pos <= eca.getSpace().size() - 1)
+    if (0 <= x_pos && x_pos < eca.getSpace().size())
     {
-        // Dibujar el cuadrado si se da click
-        RectangleShape new_shape = drawRectangle(0, x_pos, color);
+        // Dibujar el cuadrado si se da clic
+        RectangleShape new_shape = drawRectangle(generation - 1, x_pos, color);
         bool found = false;
-        for (std::vector<RectangleShape>::iterator it = shapes.begin(); it != shapes.end();)
+
+        // Buscar si la posición ya está ocupada
+        for (auto it = shapes.begin(); it != shapes.end();)
+
             if (it->getPosition() == new_shape.getPosition())
             {
-                it = shapes.erase(it);
+                // Eliminar el elemento de `shapes` y sus referencias en `drawable_shapes`
+                auto drawable_it = std::find_if(drawable_shapes.begin(), drawable_shapes.end(),
+                                                [&it](const std::shared_ptr<RectangleShape> &ptr)
+                                                { return ptr->getPosition() == it->getPosition();});
+
+                if (drawable_it != drawable_shapes.end())
+                    drawable_shapes.erase(drawable_it);
+
+                it = shapes.erase(it); // Eliminar de `shapes`
                 found = true;
                 break;
             }
+
             else
                 ++it;
 
+        // Si no se encontró, insertar la nueva forma
         if (!found)
-            shapes.push_back(drawRectangle(0, x_pos, color));
+            insertShape(new_shape);
 
-        // Actualizar el espacio
+        // Actualizar el espacio en el autómata
         eca.switchCell(x_pos);
     }
+
+    if(generation == 1)
+        generation = 0;
 }

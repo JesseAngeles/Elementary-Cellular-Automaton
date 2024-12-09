@@ -116,6 +116,10 @@ Grapher::Grapher(int width, int height, std::string tittle, Color backgroundColo
     generation_count.setFont(font);
     generation_count.setFillColor(Color::Black);
     generation_count.setCharacterSize(20);
+
+
+    oneFunction();
+
 }
 
 // Main Loop
@@ -336,7 +340,7 @@ void Grapher::switchRule2()
     int rule = std::stoi(rule_string);
 
     std::vector<bool> rule_eca = eca.getRule();
-    rule_eca[0] = !rule_eca[1];
+    rule_eca[1] = !rule_eca[1];
     eca.setRule(rule_eca);
 
     if (squares[1].getColor() == Color::White)
@@ -356,7 +360,7 @@ void Grapher::switchRule3()
     int rule = std::stoi(rule_string);
 
     std::vector<bool> rule_eca = eca.getRule();
-    rule_eca[0] = !rule_eca[2];
+    rule_eca[2] = !rule_eca[2];
     eca.setRule(rule_eca);
 
     if (squares[2].getColor() == Color::White)
@@ -376,7 +380,7 @@ void Grapher::switchRule4()
     int rule = std::stoi(rule_string);
 
     std::vector<bool> rule_eca = eca.getRule();
-    rule_eca[0] = !rule_eca[3];
+    rule_eca[3] = !rule_eca[3];
     eca.setRule(rule_eca);
 
     if (squares[3].getColor() == Color::White)
@@ -396,7 +400,7 @@ void Grapher::switchRule5()
     int rule = std::stoi(rule_string);
 
     std::vector<bool> rule_eca = eca.getRule();
-    rule_eca[0] = !rule_eca[4];
+    rule_eca[4] = !rule_eca[4];
     eca.setRule(rule_eca);
 
     if (squares[4].getColor() == Color::White)
@@ -416,7 +420,7 @@ void Grapher::switchRule6()
     int rule = std::stoi(rule_string);
 
     std::vector<bool> rule_eca = eca.getRule();
-    rule_eca[0] = !rule_eca[5];
+    rule_eca[5] = !rule_eca[5];
     eca.setRule(rule_eca);
 
     if (squares[5].getColor() == Color::White)
@@ -436,7 +440,7 @@ void Grapher::switchRule7()
     int rule = std::stoi(rule_string);
 
     std::vector<bool> rule_eca = eca.getRule();
-    rule_eca[0] = !rule_eca[6];
+    rule_eca[6] = !rule_eca[6];
     eca.setRule(rule_eca);
 
     if (squares[6].getColor() == Color::White)
@@ -456,7 +460,7 @@ void Grapher::switchRule8()
     int rule = std::stoi(rule_string);
 
     std::vector<bool> rule_eca = eca.getRule();
-    rule_eca[0] = !rule_eca[7];
+    rule_eca[7] = !rule_eca[7];
     eca.setRule(rule_eca);
 
     if (squares[7].getColor() == Color::White)
