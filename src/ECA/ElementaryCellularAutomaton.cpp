@@ -1,66 +1,55 @@
 #include "ECA/ElementaryCellularAutomaton.hpp"
+#include <array>
+#include <iostream>
+#include <vector>
 
 // Private functions
-
 bool ElementaryCellularAutomaton::apply(const std::array<bool, 3> &parents)
 {
-    if (parents[0] && parents[1] && parents[2])
-        return rule[0];
-    if (parents[0] && parents[1] && !parents[2])
-        return rule[1];
-    if (parents[0] && !parents[1] && parents[2])
-        return rule[2];
-    if (parents[0] && !parents[1] && !parents[2])
-        return rule[3];
-    if (!parents[0] && parents[1] && parents[2])
-        return rule[4];
-    if (!parents[0] && parents[1] && !parents[2])
-        return rule[5];
-    if (!parents[0] && !parents[1] && parents[2])
-        return rule[6];
-    // if (!parents[0] && !parents[1] && !parents[2])
-    return rule[7];
+    // Convertir los padres en un número binario de 3 bits
+    int rule_index = (parents[0] << 2) | (parents[1] << 1) | parents[2];
+
+    return (0b00011110 >> rule_index) & 1;
 }
 
 // Public functions
-
-void ElementaryCellularAutomaton::initRandom()
-{
-    srand(time(NULL));
-    for (int i = 0; i < space.size(); i++)
-        space[i] = std::rand() % 2;
-}
-
-void ElementaryCellularAutomaton::initOne()
-{
-    space = std::vector(space.size(), false);
-    space[space.size() / 2] = true;
-}
-
 void ElementaryCellularAutomaton::step()
 {
-    std::vector<bool> new_gen(space.size());
+    // Aumentar el tamaño del espacio (relleno con celdas falsas)
+    std::vector<bool> new_space(space.size() + 2);
 
-    for (int i = 0; i < space.size(); i++)
-        new_gen[i] = apply(std::array<bool, 3>{
-            space[(i - 1 + space.size()) % space.size()],
-            space[i],
-            space[(i + 1) % space.size()]});
+    // Inicializar las celdas ficticias
+    bool left = false;
+    bool center = false;
+    bool right = space[0];
 
-    space = new_gen;
+    // std::cout << "\n";
+
+    // Iterar sobre el espacio original
+    for (size_t i = 0; i < new_space.size(); ++i)
+    {
+        new_space[i] = apply({left, center, right});
+        // std::cout << left << "-" << center << "-" << right << "=" << new_space[i] << "\n";
+        left = center;
+        center = right;
+        right = (i + 1 < space.size()) ? space[i + 1] : false;
+    }
+
+    // Reasignar espacio
+    space = new_space;
 }
 
 void ElementaryCellularAutomaton::run(int steps, bool print)
 {
-
-    for (int i = 0; i < steps; i++)
+    for (int i = 0; i < steps; ++i)
     {
         if (print)
             display();
         step();
     }
 
-    display();
+    if (print)
+        display();
 }
 
 void ElementaryCellularAutomaton::display()
@@ -68,7 +57,7 @@ void ElementaryCellularAutomaton::display()
     std::cout << std::endl;
     for (const bool &value : space)
         if (value)
-            std::cout << "o";
+            std::cout << "o"; // Representa "1"
         else
-            std::cout << " ";
+            std::cout << " "; // Representa "0"
 }

@@ -5,35 +5,30 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 class ElementaryCellularAutomaton
 {
 private:
     // Attributes
-    std::vector<bool> rule;
     std::vector<bool> space;
+    int generation_count;
 
     // Functions
     bool apply(const std::array<bool, 3> &parents);
 
 public:
     // Constructor
-    ElementaryCellularAutomaton(const std::vector<bool> &rule, int space_size)
-        : rule(rule), space(space_size, false) {};
+    ElementaryCellularAutomaton()
+        : generation_count(0), space(1, true) {}
 
     // Functions
-    void initRandom();
-    void initOne();
-
     void step();
-    void run(int steps, bool print = false);
-    
+    void run(int steps, bool print);
+
     // Getters
-    const std::vector<bool> getRule() const { return rule; }
 
     // Setters
-    void setRule(const std::vector<bool> &rule) { this->rule = rule; }
-    void setSpace(const std::vector<bool> &space) { this->space = space; }
 
     // Displays
     void display();
