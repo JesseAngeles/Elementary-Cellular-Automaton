@@ -8,13 +8,24 @@ int main()
 {
     ElementaryCellularAutomaton eca;
 
-    int i = 0;
-    do
-    {
-        eca.step();
-        cout << i << "\n";
-    } while (++i > 0);
-    
+    int max;
+    bool display;
+
+    cout << "Generations to create: ";
+    cin >> max;
+
+    cout << "Display (0, 1): ";
+    cin >> display;
+
+    if (display)
+        for (int i = 0; i < max; i++)
+        {
+            eca.step();
+            eca.display();
+        }
+    else
+        for (int i = 0; i < max; i++)
+            eca.step();
 
     return 0;
 }

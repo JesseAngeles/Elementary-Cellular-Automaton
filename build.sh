@@ -3,6 +3,7 @@ clear
 # Limpiar directorio de compilación
 mkdir -p build
 rm -rf build/*
+#rm -rf resources/*
 
 # Compilar los archivos fuente
 g++ -c -std=c++17 -I./include main.cpp -o build/main.o
