@@ -10,6 +10,9 @@
 #include <fstream>
 #include <filesystem>
 #include <regex>
+#include <cstdlib>
+
+#define DIRECTORY "resources"
 
 class ElementaryCellularAutomaton
 {
@@ -34,9 +37,14 @@ public:
 
     // Functions
     void step();
+    void compressAndClean();
+
+    // Getters
+    int getGenerationCount() const { return generation_count; }
 
     // Displays
     void display();
+    void displayFile(int generation);
 };
 
 #endif // ELEMENTARY_CELULLAR_AUTOMATON_H
