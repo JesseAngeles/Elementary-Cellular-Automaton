@@ -206,8 +206,8 @@ void ElementaryCellularAutomaton::compressAndClean()
     // Crear el nombre del archivo comprimido
     std::string zip_name = DIRECTORY + std::string("/") + std::to_string(min_number) + "-" + std::to_string(max_number - 1) + ".zip";
 
-    // Crear una lista de archivos a comprimir, excluyendo el último
-    std::string files_to_compress;
+    // Crear un archivo de lista para los archivos a comprimir
+    std::ofstream file_list("file_list.txt");
     for (const auto &entry : std::filesystem::directory_iterator(DIRECTORY))
     {
         if (entry.is_regular_file())
@@ -223,9 +223,7 @@ void ElementaryCellularAutomaton::compressAndClean()
                     // Excluir el archivo con el número más alto
                     if (number != max_number)
                     {
-                        if (!files_to_compress.empty())
-                            files_to_compress += " "; // Espacio entre los archivos
-                        files_to_compress += entry.path().string();
+                        file_list << entry.path().string() << "\n";
                     }
                 }
                 catch (const std::invalid_argument &e)
@@ -235,18 +233,16 @@ void ElementaryCellularAutomaton::compressAndClean()
             }
         }
     }
+    file_list.close();
 
-    // Comprimir los archivos seleccionados (requiere zip instalado en el sistema)
-    if (!files_to_compress.empty())
+    // Comprimir los archivos seleccionados usando la lista
+    std::string command = "zip -r " + zip_name + " -@ < file_list.txt";
+    int result = std::system(command.c_str());
+
+    if (result != 0)
     {
-        std::string command = "zip -r " + zip_name + " " + files_to_compress;
-        int result = std::system(command.c_str());
-
-        if (result != 0)
-        {
-            std::cerr << "Error al comprimir los archivos." << std::endl;
-            return;
-        }
+        std::cerr << "Error al comprimir los archivos." << std::endl;
+        return;
     }
 
     // Eliminar todos los archivos excepto el último
@@ -274,6 +270,9 @@ void ElementaryCellularAutomaton::compressAndClean()
             }
         }
     }
+
+    // Eliminar el archivo de lista temporal
+    std::filesystem::remove("file_list.txt");
 }
 
 // Displays
