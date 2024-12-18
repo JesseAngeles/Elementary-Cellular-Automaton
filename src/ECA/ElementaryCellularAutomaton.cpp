@@ -5,7 +5,6 @@
 
 // Constructor
 ElementaryCellularAutomaton::ElementaryCellularAutomaton()
-// : generation_count(0), space(1, true)
 {
     findLastSpace();
     setSpace();
@@ -16,6 +15,7 @@ void ElementaryCellularAutomaton::findLastSpace()
 {
     std::string last_file;
     this->generation_count = 0;
+    this->min_generation = std::numeric_limits<int>::max();
 
     std::regex file_pattern(R"((\d+)\.bin)");
     for (const auto &entry : std::filesystem::directory_iterator(DIRECTORY))
@@ -32,9 +32,15 @@ void ElementaryCellularAutomaton::findLastSpace()
                     generation_count = number;
                     last_file = entry.path().string();
                 }
+
+                if (number < min_generation)
+                    min_generation = number;
             }
         }
     }
+
+    if (min_generation == std::numeric_limits<int>::max())
+        min_generation = 1;
 
     if (!generation_count)
     {
@@ -275,6 +281,24 @@ void ElementaryCellularAutomaton::compressAndClean()
     std::filesystem::remove("file_list.txt");
 }
 
+// Getters
+std::vector<bool> ElementaryCellularAutomaton::getSpace(int generation)
+{
+    // Encontrar el archivo
+    std::string file = DIRECTORY + std::string("/") + std::to_string(generation) + ".bin";
+
+    // Leer archivo binario o obtener el espacio
+    if (current_file.is_open())
+        current_file.close();
+
+    current_file.open(file, std::ios::in | std::ios::binary);
+    // if (current_file.is_open())
+
+    setSpace();
+
+    return space;
+}
+
 // Displays
 void ElementaryCellularAutomaton::display()
 {
@@ -288,14 +312,13 @@ void ElementaryCellularAutomaton::display()
 
 void ElementaryCellularAutomaton::displayFile(int generation)
 {
-    if (generation > generation)
+    if (generation > generation_count)
     {
         std::cout << "Not created yet";
         return;
     }
 
     // Encontrar el archivo
-
     std::string file = DIRECTORY + std::string("/") + std::to_string(generation) + ".bin";
 
     // Leer archivo binario o obtener el espacio
