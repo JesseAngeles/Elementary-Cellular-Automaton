@@ -18,4 +18,4 @@ g++ build/main.o \
     -o build/main.exe
 
 # Ejecutar el programa
-./build/main.exe
+time ./build/main.exe

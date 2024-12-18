@@ -33,9 +33,9 @@ int main()
 
     vector<bool> new_vector = loadVector("data/central.bin");
     
-    new_vector.resize(eca.getGenerationCount() - 1);
+    new_vector.resize(eca.getGenerationCount());
 
-    for (int i = eca.getMinGeneration(); i < eca.getGenerationCount(); i++)
+    for (int i = eca.getMinGeneration(); i <= eca.getGenerationCount(); i++)
     {
         vector<bool> space = eca.getSpace(i);
         new_vector[i - 1] = space[space.size()/2];
