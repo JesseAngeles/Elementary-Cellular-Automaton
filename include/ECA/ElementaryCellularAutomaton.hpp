@@ -3,6 +3,7 @@
 
 #include <array>
 #include <vector>
+#include <map>
 #include <iostream>
 #include <cmath>
 #include <algorithm>
@@ -39,6 +40,9 @@ public:
     // Functions
     void step();
     void compressAndClean();
+
+    // Prime number analisis
+    std::map<int, std::vector<int>> primeNumberAnalisis(const std::vector<bool> &column, const std::vector<int> &prime);
 
     // Getters
     int getGenerationCount() const { return generation_count; }

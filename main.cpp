@@ -1,20 +1,10 @@
 #include <iostream>
 
 #include "ECA/ElementaryCellularAutomaton.hpp"
+#include "PrimeGenerator.hpp"
 #include "FileController.hpp"
 
 using namespace std;
-
-int mainMenu()
-{
-    int option;
-    cout << "0) Display generation\n";
-    cout << "n) Create N generations\n";
-
-    cin >> option;
-
-    return option;
-}
 
 int displayMenu()
 {
@@ -29,27 +19,31 @@ int displayMenu()
 
 int main()
 {
+    // Generar numeros primos
+    std::vector<bool> column = loadVector("data/central.bin");
+    std::vector<int> primes = loadPrimeVector("data/primes.csv");
+
+    // primes.insert(primes.begin(), 1);
+
+    cout << primes.size() * column.size();
+
+    // column.resize(20);
+    // primes.resize(8);
+
     ElementaryCellularAutomaton eca;
 
-    vector<bool> new_vector = loadVector("data/central.bin");
-    
-    new_vector.resize(eca.getGenerationCount());
+    map<int, vector<int>> populations = eca.primeNumberAnalisis(column, primes);
 
-    for (int i = eca.getMinGeneration(); i <= eca.getGenerationCount(); i++)
-    {
-        vector<bool> space = eca.getSpace(i);
-        new_vector[i - 1] = space[space.size()/2];
-    }
-    
-    // Display mid vector
-    for (const bool &value : new_vector)
-        cout << value << " ";
+    // for (auto c : column)
+    //     cout << c << " ";
 
-    cout << "size: " << new_vector.size() << endl;
+    // cout << "\n"; 
 
-    saveVector(makeVectorWrittable(new_vector), "data/central");
-
-    new_vector.clear();
-
-    return 0;
+    // for (auto p : populations)
+    // {
+    //     std::cout << p.first << ": ";
+    //     for (auto c : p.second)
+    //         std::cout << c << " ";
+    //     std::cout << "\n";
+    // }
 }

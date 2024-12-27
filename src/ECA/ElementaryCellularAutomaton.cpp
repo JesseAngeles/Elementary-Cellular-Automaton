@@ -281,6 +281,36 @@ void ElementaryCellularAutomaton::compressAndClean()
     std::filesystem::remove("file_list.txt");
 }
 
+std::map<int, std::vector<int>> ElementaryCellularAutomaton::primeNumberAnalisis(
+    const std::vector<bool> &column, const std::vector<int> &primes)
+{
+    std::map<int, std::vector<int>> populations;
+
+    // Iterate the prime numbers
+    for (const int &prime : primes)
+    {
+        std::vector<int> frecuencies;
+        int count = 0;
+
+        // Iterate de main column
+        for (int i = 0; i < column.size(); i++)
+        {
+            count += column[i];
+            if ((i + 1) % prime == 0)
+            {
+                frecuencies.push_back(count);
+                count = 0;
+            }
+        }
+    
+        frecuencies.push_back(frecuencies.size() * prime);
+        populations[prime] = frecuencies;
+
+    
+    }
+    return populations;
+}
+
 // Getters
 std::vector<bool> ElementaryCellularAutomaton::getSpace(int generation)
 {
