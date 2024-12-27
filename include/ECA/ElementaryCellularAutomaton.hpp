@@ -5,38 +5,46 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
+
+#include <fstream>
+#include <filesystem>
+#include <regex>
+#include <cstdlib>
+
+#define DIRECTORY "resources"
 
 class ElementaryCellularAutomaton
 {
 private:
     // Attributes
-    std::vector<bool> rule;
     std::vector<bool> space;
+    int generation_count;
+    std::fstream current_file;
 
     // Functions
+    void findLastSpace();
+    std::vector<char> makeVectorWrittable();
+    void setSpace();
+    void updateCurrentFile();
+    void truncateSpace();
+
     bool apply(const std::array<bool, 3> &parents);
 
 public:
     // Constructor
-    ElementaryCellularAutomaton(const std::vector<bool> &rule, int space_size)
-        : rule(rule), space(space_size, false) {};
+    ElementaryCellularAutomaton();
 
     // Functions
-    void initRandom();
-    void initOne();
-
     void step();
-    void run(int steps, bool print = false);
-    
-    // Getters
-    const std::vector<bool> getRule() const { return rule; }
+    void compressAndClean();
 
-    // Setters
-    void setRule(const std::vector<bool> &rule) { this->rule = rule; }
-    void setSpace(const std::vector<bool> &space) { this->space = space; }
+    // Getters
+    int getGenerationCount() const { return generation_count; }
 
     // Displays
     void display();
+    void displayFile(int generation);
 };
 
 #endif // ELEMENTARY_CELULLAR_AUTOMATON_H
