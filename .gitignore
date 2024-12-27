@@ -1,5 +1,9 @@
 build
 .vscode
-resources
-resources
+resources/*.bin
 data/*.zip
+report/*.aux
+report/*.log
+report/*.synctex.gz
+report/*.toc
+report/*.pdf
