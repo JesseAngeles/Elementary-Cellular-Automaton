@@ -180,16 +180,58 @@
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=\textwidth]{img/r30_1.png}
-		\caption{23 primeras generaciones de la regla 30}
+		\caption{Primeras 23 generaciones de la regla 30}
 		\label{img:r30_1}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=\textwidth]{img/r30_2.png}
-		\caption{900 primeras generaciones de la regla 30}
+		\caption{Primeras 900 generaciones de la regla 30}
 		\label{img:r30_2}
 	\end{figure}
+	
+	\section{Metodología}
+	
+	El objetivo es encontrar un patrón en la columna principal. El primer análisis consiste en dividir el vector en todos los factores primos y medir el numero el numero de veces que la célula adquiere el valor el valor de 1.
+	
+	\subsection{Generación de datos}
+	
+	Se diseñó un programa en C++ con el objetivo de generar el mayor número de generaciones posibles. Cada generación es una secuencia de valores booleanos, que puede representarse como una cadena de valores binarios para ser almacenada como una secuencia de bytes en archivos de tipo binario.
+	
+	Cada generación se guarda en un archivo independiente, lo que permite acceder a ellas de forma individual. Esto asegura que, dada una generación $n$, sea posible calcular la generación $n+1$ sin necesidad de almacenar las $n-1$ generaciones anteriores.
+	
+	Debido a las limitaciones de visualización en el equipo de cómputo, se implementó una función que comprime todas las generaciones almacenadas en un único archivo.
+	
+	El número de operaciones depende del tamaño del vector, y dado que cada nueva generación aumenta en dos unidades y tiene una longitud impar, se puede utilizar la fórmula de la suma de Gauss para números impares:
+	
+	\begin{equation*}
+		\sum_{i = 1}^{n} 2i - 1 = n^2
+	\end{equation*}
+	
+	Para calcular el tiempo y el almacenamiento requeridos, se realizó una prueba inicial con un lote de 100,000 datos. A partir de los resultados, se estimaron los recursos necesarios para almacenar 2,500,000 datos en un disco duro externo.
+	
+	\begin{center}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			& \textbf{Valor calculado para} & \textbf{Valor aproximado para} \\
+			& \textbf{100,000} & \textbf{2,500,000} \\
+			\hline
+			\textbf{Tiempo} & 32 minutos & $\approx$ 20,000 minutos $\approx$ 2 semanas \\
+			\hline
+			\textbf{Espacio} & 1.3 GB & $\approx$ 820 GB \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\subsection{Extracción de características}
+	
+	Se diseña una función que itera todas las generaciones actualmente cargadas y extrae el valor de la columna principal, es decir, el valor en la posición $n$. Este paso se realiza con todas las generaciones hasta almacenar un vector de valores booleanos, que nuevamente se reescribe en un archivo de tipo binario.
+	
+	Ademas, se generan los primeros $m$ números primos menores a 1,250,000 para no tener que generarlos en tiempo real.
+	
+	\subsection{Segmentación}
+	
 	
 	\clearpage
 	\addcontentsline{toc}{section}{Referencias}
