@@ -20,6 +20,7 @@ private:
     // Attributes
     std::vector<bool> space;
     int generation_count;
+    int min_generation;
     std::fstream current_file;
 
     // Functions
@@ -41,6 +42,8 @@ public:
 
     // Getters
     int getGenerationCount() const { return generation_count; }
+    int getMinGeneration() const { return min_generation; }
+    std::vector<bool> getSpace(int generation);
 
     // Displays
     void display();

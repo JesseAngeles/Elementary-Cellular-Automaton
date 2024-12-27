@@ -2,6 +2,7 @@
 
 #include "ECA/ElementaryCellularAutomaton.hpp"
 #include "GUI/Grapher.h"
+#include "FileController.hpp"
 
 using namespace std;
 
@@ -31,44 +32,25 @@ int main()
 {
     ElementaryCellularAutomaton eca;
 
-    int main_option = mainMenu();
-    if (!main_option)
+    vector<bool> new_vector = loadVector("data/central.bin");
+    
+    new_vector.resize(eca.getGenerationCount());
+
+    for (int i = eca.getMinGeneration(); i <= eca.getGenerationCount(); i++)
     {
-        int display_option = displayMenu();
-        if (!display_option)
-            // Display all options
-            for (int i = 1; i <= eca.getGenerationCount(); i++)
-                eca.displayFile(i);
-        else
-            // Display especific generation
-            eca.displayFile(display_option);
+        vector<bool> space = eca.getSpace(i);
+        new_vector[i - 1] = space[space.size()/2];
     }
-    else
-    {
-        bool display = false;
+    
+    // Display mid vector
+    for (const bool &value : new_vector)
+        cout << value << " ";
 
-        cout << "Display (0, 1): ";
-        cin >> display;
+    cout << "size: " << new_vector.size() << endl;
 
-        if (display)
-            for (int i = 0; i < main_option; i++)
-            {
-                eca.step();
-                eca.display();
-            }
-        else
-            for (int i = 0; i < main_option; i++)
-                eca.step();
-    }
+    saveVector(makeVectorWrittable(new_vector), "data/central");
 
-    std::cout << "";
-
-    bool compress;
-    std::cout << "\nCompress (0, 1): ";
-    cin >> compress;
-
-    if (compress)
-        eca.compressAndClean();
+    new_vector.clear();
 
     return 0;
 }
