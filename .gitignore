@@ -1,4 +1,8 @@
 build
 .vscode
+<<<<<<< HEAD
+resources
+=======
 resources
 data/*.zip
+>>>>>>> 76844b28817c9e6c1d8a679536dd9ef02f1a8c2b

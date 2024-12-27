@@ -48,7 +48,7 @@ public:
     // Setters
     void setFont(Font font) { this->font = font; }
     void setTextBoxFunction(std::function<void()> textBoxFunction) { this->textBoxFunction = textBoxFunction; }
-    void setText(Text text) { this->text = text; }
+    void setText(std::string text) { this->text.setString(text); }
 };
 
 #endif // TEXT_BOX_H

@@ -10,6 +10,9 @@ ElementaryCellularAutomaton::ElementaryCellularAutomaton()
     setSpace();
 }
 
+<<<<<<< HEAD
+// Constructor
+=======
 // Private functions
 void ElementaryCellularAutomaton::findLastSpace()
 {
@@ -139,7 +142,9 @@ void ElementaryCellularAutomaton::truncateSpace()
     // Crear un nuevo vector con los valores entre 'inicio' y 'fin'
     space = std::vector<bool>(space.begin() + start, space.begin() + end);
 }
+>>>>>>> 76844b28817c9e6c1d8a679536dd9ef02f1a8c2b
 
+// Private functions
 bool ElementaryCellularAutomaton::apply(const std::array<bool, 3> &parents)
 {
     int rule_index = (parents[0] << 2) | (parents[1] << 1) | parents[2];
@@ -147,6 +152,26 @@ bool ElementaryCellularAutomaton::apply(const std::array<bool, 3> &parents)
 }
 
 // Public functions
+<<<<<<< HEAD
+
+void ElementaryCellularAutomaton::initRandom()
+{
+    srand(time(NULL));
+    for (int i = 0; i < space.size(); i++)
+        space[i] = std::rand() % 2;
+}
+
+int ElementaryCellularAutomaton::initOne()
+{
+    space = std::vector(space.size(), false);
+    int pos = space.size() / 2;
+    space[pos] = true;
+
+    return pos;
+}
+
+=======
+>>>>>>> 76844b28817c9e6c1d8a679536dd9ef02f1a8c2b
 void ElementaryCellularAutomaton::step()
 {
     std::vector<bool> new_space(space.size() + 2);
@@ -281,6 +306,36 @@ void ElementaryCellularAutomaton::compressAndClean()
     std::filesystem::remove("file_list.txt");
 }
 
+std::map<int, std::vector<int>> ElementaryCellularAutomaton::primeNumberAnalisis(
+    const std::vector<bool> &column, const std::vector<int> &primes)
+{
+    std::map<int, std::vector<int>> populations;
+
+    // Iterate the prime numbers
+    for (const int &prime : primes)
+    {
+        std::vector<int> frecuencies;
+        int count = 0;
+
+        // Iterate de main column
+        for (int i = 0; i < column.size(); i++)
+        {
+            count += column[i];
+            if ((i + 1) % prime == 0)
+            {
+                frecuencies.push_back(count);
+                count = 0;
+            }
+        }
+    
+        frecuencies.push_back(frecuencies.size() * prime);
+        populations[prime] = frecuencies;
+
+    
+    }
+    return populations;
+}
+
 // Getters
 std::vector<bool> ElementaryCellularAutomaton::getSpace(int generation)
 {
@@ -307,6 +362,9 @@ void ElementaryCellularAutomaton::display()
         if (value)
             std::cout << "o"; // "1"
         else
+<<<<<<< HEAD
+            std::cout << " ";
+=======
             std::cout << " "; // "0"
 }
 
@@ -330,4 +388,5 @@ void ElementaryCellularAutomaton::displayFile(int generation)
 
     setSpace();
     display();
+>>>>>>> 76844b28817c9e6c1d8a679536dd9ef02f1a8c2b
 }
