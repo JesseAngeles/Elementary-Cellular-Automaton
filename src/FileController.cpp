@@ -18,30 +18,49 @@ std::vector<char> makeVectorWrittable(const std::vector<bool> &vector)
     return byte_buffer;
 }
 
-void saveVector(const std::vector<char> &vector, const std::string &filename)
+void saveBoolVector(const std::vector<bool> &vector, const std::string &filename)
 {
+    std::vector<char> writtable_vector = makeVectorWrittable(vector);
+
     std::string file_name = filename + ".bin";
 
     std::fstream current_file;
     current_file.open(file_name, std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
-    current_file.write(vector.data(), vector.size());
+    current_file.write(writtable_vector.data(), writtable_vector.size());
     current_file.flush();
 }
 
-void savePrimeVector(const std::vector<int> &primes, const std::string &filename)
+void saveIntVector(const std::vector<int> &vector, const std::string &filename)
 {
     // Abrir archivo en modo de escritura
     std::ofstream file(filename);
 
     // Escribir los elementos del vector en el archivo
-    for (const int &prime : primes)
+    for (const int &prime : vector)
         file << prime << ",";
 
     // Cerrar el archivo
     file.close();
 }
 
-std::vector<bool> loadVector(const std::string &filename)
+void saveIntMatrix(const std::vector<std::vector<int>> &matrix, const std::string &filename)
+{
+    // Abrir archivo en modo de escritura
+    std::ofstream file(filename);
+
+    // Escribir los elementos del vector en el archivo
+    for (const std::vector<int> &vector : matrix)
+    {
+        for (const int &prime : vector)
+            file << prime << ",";
+        file << std::endl;
+    }
+
+    // Cerrar el archivo
+    file.close();
+}
+
+std::vector<bool> loadBoolVector(const std::string &filename)
 {
     std::ifstream file;
     std::vector<bool> space;
@@ -78,7 +97,7 @@ std::vector<bool> loadVector(const std::string &filename)
     return space;
 }
 
-std::vector<int> loadPrimeVector(const std::string &filename)
+std::vector<int> loadIntVector(const std::string &filename)
 {
     std::vector<int> primes;
     std::ifstream file(filename);
@@ -103,6 +122,37 @@ std::vector<int> loadPrimeVector(const std::string &filename)
 
     file.close();
     return primes;
+}
+
+std::vector<std::vector<int>> loadMatrix(const std::string &filename)
+{
+    std::vector<std::vector<int>> prime_analisis;
+    std::ifstream file(filename);
+
+    std::string line;
+
+    // Verificar si el archivo se abrió correctamente
+    if (!file.is_open())
+        return prime_analisis;
+
+    while (std::getline(file, line))
+    {
+        std::vector<int> primes;
+
+        std::stringstream ss(line);
+        std::string number;
+
+        // Separar los números por comas
+        while (std::getline(ss, number, ','))
+        {
+            primes.push_back(std::stoi(number)); // Convertir a entero y agregar al vector
+        }
+
+        prime_analisis.push_back(primes);
+    }
+
+    file.close();
+    return prime_analisis;
 }
 
 void truncateVector(std::vector<bool> &vector)

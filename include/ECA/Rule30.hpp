@@ -13,7 +13,6 @@
 #include <fstream>
 #include <filesystem>
 
-
 class Rule30
 {
 private:
@@ -42,7 +41,9 @@ public:
     void compressAndClean();
 
     // Prime number analisis
-    std::map<int, std::vector<int>> primeNumberAnalisis(const std::vector<bool> &column, const std::vector<int> &prime);
+    void primeNumberAnalisis(std::map<int, std::vector<int>> &current,
+                             const std::vector<bool> &column,
+                             const std::vector<int> &primes);
 
     // Getters
     int getGenerationCount() const { return generation_count; }

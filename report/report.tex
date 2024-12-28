@@ -149,9 +149,9 @@
 		
 	\end{itemize}
 	
-	A cada combinación de vecindad se le puede asociar un número binario determinado por el valor de cada célula. Dado que existen 8 combinaciones, cada ECA se puede representar mediante un número binario de 8 dígitos, lo que, traducido a base decimal, adquiere un valor (y el nombre) entre 0 y 255.
+	A cada combinación de vecindad se le puede asociar un número binario determinado por el valor de cada célula. Dado que existen 8 combinaciones, cada ECA se puede representar mediante un número binario de 8 dígitos, lo que, traducido a base decimal, adquiere un valor (y el nombre del ECA) entre 0 y 255.
 	
-	En la figura \ref{img:eca1}, se muestra la configuración de la regla 210, que equivale a $210_{10} = 11010010_2$. Las casillas negras representan los unos, y las blancas, los ceros.
+	En la figura \ref{img:eca1}, se muestra la configuración de la regla 210, que equivale a $210_{10} = 11010010_2$ en base binaria. Las casillas negras representan los unos, y las blancas, los ceros.
 	
 	\begin{figure}[H]
 		\centering
@@ -193,15 +193,15 @@
 	
 	\section{Metodología}
 	
-	El objetivo es encontrar un patrón en la columna principal. El primer análisis consiste en dividir el vector en todos los factores primos y medir el numero el numero de veces que la célula adquiere el valor el valor de 1.
+	El objetivo principal es identificar un patrón en la columna principal del autómata celular. El primer análisis consiste en dividir el vector en todos los factores primos y medir la frecuencia con la que la célula adquiere el valor de 1.
 	
 	\subsection{Generación de datos}
 	
-	Se diseñó un programa en C++ con el objetivo de generar el mayor número de generaciones posibles. Cada generación es una secuencia de valores booleanos, que puede representarse como una cadena de valores binarios para ser almacenada como una secuencia de bytes en archivos de tipo binario.
+	Se diseñó un programa en C++ con el objetivo de generar el mayor número posible de generaciones. Cada generación es una secuencia de valores booleanos que puede representarse como una cadena de valores binarios y almacenarse como una secuencia de bytes en archivos binarios.
 	
-	Cada generación se guarda en un archivo independiente, lo que permite acceder a ellas de forma individual. Esto asegura que, dada una generación $n$, sea posible calcular la generación $n+1$ sin necesidad de almacenar las $n-1$ generaciones anteriores.
+	Cada generación se guarda en un archivo independiente, permitiendo el acceso directo a cada una de ellas. Esto asegura que, dada una generación $n$, sea posible calcular la generación $n+1$ sin necesidad de almacenar las $n-1$ generaciones previas.
 	
-	Debido a las limitaciones de visualización en el equipo de cómputo, se implementó una función que comprime todas las generaciones almacenadas en un único archivo.
+	Debido a las limitaciones de visualización del equipo de cómputo, se implementó una función que comprime todas las generaciones almacenadas en un único archivo.
 	
 	El número de operaciones depende del tamaño del vector, y dado que cada nueva generación aumenta en dos unidades y tiene una longitud impar, se puede utilizar la fórmula de la suma de Gauss para números impares:
 	
@@ -209,7 +209,7 @@
 		\sum_{i = 1}^{n} 2i - 1 = n^2
 	\end{equation*}
 	
-	Para calcular el tiempo y el almacenamiento requeridos, se realizó una prueba inicial con un lote de 100,000 datos. A partir de los resultados, se estimaron los recursos necesarios para almacenar 2,500,000 datos en un disco duro externo.
+	Para estimar el tiempo y el almacenamiento necesarios, se realizó una prueba inicial con un lote de 100,000 datos. A partir de los resultados, se calcularon los recursos requeridos para almacenar 2,500,000 datos en un disco duro externo.
 	
 	\begin{center}
 		\begin{tabular}{|c|c|c|}
@@ -226,12 +226,15 @@
 	
 	\subsection{Extracción de características}
 	
-	Se diseña una función que itera todas las generaciones actualmente cargadas y extrae el valor de la columna principal, es decir, el valor en la posición $n$. Este paso se realiza con todas las generaciones hasta almacenar un vector de valores booleanos, que nuevamente se reescribe en un archivo de tipo binario.
+	Se diseñó una función que itera sobre todas las generaciones actualmente cargadas y extrae el valor de la columna principal, es decir, el valor en la posición $n$. Este procedimiento se realiza para todas las generaciones, hasta obtener un vector de valores booleanos que, a su vez, se reescribe en un archivo binario.
 	
-	Ademas, se generan los primeros $m$ números primos menores a 1,250,000 para no tener que generarlos en tiempo real.
+	Además, se generan previamente los primeros $m$ números primos menores a 1,250,000 para evitar calcularlos en tiempo de ejecución.
 	
-	\subsection{Segmentación}
+	\subsection{Múltiplos primos}
 	
+	Se divide el vector de la columna principal en sub-vectores del mismo tamaño, posteriormente se almacena la frecuencia del estado 1 en cada vector con el objetivo de identificar un patrón en la frecuencia. Este análisis se realiza para sub-vectores de todos los tamaños menores a 1,250,000, dado que este es el tamaño máximo que permite realizar comparaciones (Dos vectores).
+	
+	Por el teorema fundamental de la aritmética, todo número puede expresarse como el producto de números primos. Por esta razón, es suficiente realizar el análisis para números primos, ya que, si existe un patrón en las frecuencias, dicho patrón debería aparecer en las componentes primarias.
 	
 	\clearpage
 	\addcontentsline{toc}{section}{Referencias}

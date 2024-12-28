@@ -3,7 +3,7 @@
 #include "ECA/ElementaryCellularAutomaton.hpp"
 #include "ECA/Rule30.hpp"
 
-#include "GUI/Grapher.h"
+// #include "GUI/Grapher.h"
 
 #include "Functions.h"
 #include "PrimeGenerator.hpp"
@@ -16,9 +16,8 @@ int generationsMenu();
 int displayMenu();
 
 void calculateGenerations();
-void graphicMode();
+// void graphicMode();
 void primeAnalisis();
-
 
 int main()
 {
@@ -30,7 +29,7 @@ int main()
         calculateGenerations();
         break;
     case 2:
-        graphicMode();
+        // graphicMode();
         break;
     case 3:
         primeAnalisis();
@@ -108,51 +107,40 @@ void calculateGenerations()
                 eca.step();
     }
 
-    std::cout << "";
+    cout << "";
 
     bool compress;
-    std::cout << "\nCompress (0, 1): ";
+    cout << "\nCompress (0, 1): ";
     cin >> compress;
 
     if (compress)
         eca.compressAndClean();
 }
 
-void graphicMode()
-{
-    int rule = 0;
-    ElementaryCellularAutomaton eca(getBinary(rule, 8), 100);
-    Grapher gui(1920, 1080, "Elementary Cellular Automaton", {255, 255, 255}, eca);
-    gui.mainLoop();
-}
+// void graphicMode()
+// {
+//     int rule = 0;
+//     ElementaryCellularAutomaton eca(getBinary(rule, 8), 100);
+//     Grapher gui(1920, 1080, "Elementary Cellular Automaton", {255, 255, 255}, eca);
+//     gui.mainLoop();
+// }
 
 void primeAnalisis()
 {
-    // Generar numeros primos
-    std::vector<bool> column = loadVector("data/central.bin");
-    std::vector<int> primes = loadPrimeVector("data/primes.csv");
+    // Cargar datos
+    vector<bool> column = loadBoolVector("data/central.bin");
+    vector<int> primes = loadIntVector("data/primes.csv");
+    vector<vector<int>> prime_analisis = loadMatrix("data/prime_analisis.csv");
+    map<int, vector<int>> populations = matrixToMap(prime_analisis);
 
-    // primes.insert(primes.begin(), 1);
-
-    cout << primes.size() * column.size();
-
-    // column.resize(20);
-    // primes.resize(8);
+    // Ajustar parametros
+    primes.insert(primes.begin(), 1);
+    // column.resize(2000);
+    // primes.resize(10);
 
     Rule30 eca;
+    eca.primeNumberAnalisis(populations, column, primes);
+    vector<vector<int>> prime_matrix = mapToMatrix(populations);
 
-    map<int, vector<int>> populations = eca.primeNumberAnalisis(column, primes);
-
-    // for (auto c : column)
-    //     cout << c << " ";
-
-    // cout << "\n";
-
-    // for (auto p : populations)
-    // {
-    //     std::cout << p.first << ": ";
-    //     for (auto c : p.second)
-    //         std::cout << c << " ";
-    //     std::cout << "\n";
-    // }
+    saveIntMatrix(prime_matrix, "data/prime_analisis.csv");
 }
