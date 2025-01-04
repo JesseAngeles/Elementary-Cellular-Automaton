@@ -101,7 +101,7 @@
 		
 	\section{Introducción}
 	
-	Los autómatas celulares (AC, de ahora en adelante, por su traducción al inglés: ``Cellular Automaton'') fueron concebidos por John Von Neumann en 1948 mientras buscaba diseñar un sistema capaz de auto-replicarse, es decir, un robot con la capacidad de construir otro robot. Las limitaciones físicas lo llevaron a seguir el consejo de Stanislaw Ulam, quien le sugirió diseñar un modelo matemático discreto con esta capacidad de auto-reproducción.
+	Los autómatas celulares (AC, de ahora en adelante, por su traducción al inglés: ``Cellular Automaton'') fueron concebidos por John Von Neumann en 1948 mientras buscaba diseñar un sistema capaz de auto-replicarse, es decir, un robot con la capacidad de construir otro robot. Las limitaciones físicas lo llevaron a seguir el consejo de Stanislaw Ulam, quien le sugirió diseñar un modelo matemático discreto con esta capacidad de auto-reproducción \cite{b1}.
 	
 	Los AC se definen como un conjunto de celdas o células que adquieren diferentes valores según la interacción que se produce entre ellas. Matemáticamente, un AC se describe mediante una 4-tupla:
 	
@@ -117,15 +117,15 @@
 		\item $\boldsymbol{f : S^{[N]} \rightarrow S}$: Función de transición. Determina el próximo valor de cada célula en función de los valores de las células vecinas. Esta actualización se realiza de manera simultánea en cada periodo de tiempo discreto.
 	\end{itemize}
 	
-	Estos sistemas permiten simular diversos fenómenos, como el comportamiento de ecosistemas en biología, la detección de incendios en bosques o el tráfico vehicular en diferentes ciudades.
+	Estos sistemas han sido usados en el modelado de estaciones de metro \cite{b2}, comportamiento de plagas en ecosistemas \cite{b3}, sistemas de mercado financiero \cite{b4} o en el análisis de comportamiento de células cancerígenas \cite{b5}.
 	
 	Dos de los AC más conocidos son el Juego de la Vida, propuesto por John Conway, y el Autómata Celular Elemental, desarrollado por Stephen Wolfram.
 	
-	El Juego de la Vida de Conway consiste en un conjunto de células en un espacio bidimensional, un conjunto de estados binarios, una vecindad de Moore (las 8 células circundantes) y una función que define la vida o muerte de cada célula con base en la población viva de su vecindad.
+	El Juego de la Vida de Conway consiste en un conjunto de células en un espacio bidimensional, un conjunto de estados binarios (vivo y muerto), una vecindad de Moore (las 8 células circundantes) y una función que define la vida o muerte de cada célula con base en la población viva de su vecindad \cite{b6}.
 	
-	Por otro lado, el Autómata Celular Elemental es una colección de autómatas que comparten un espacio unidimensional, un conjunto de estados binarios y una vecindad de radio uno (la célula en cuestión y sus dos células vecinas más cercanas). Dichos autómatas se diferencian únicamente en la función de transición, que puede adoptar hasta 256 ``reglas'' o configuraciones diferentes.
+	Por otro lado, el Autómata Celular Elemental es una colección de autómatas que comparten un espacio unidimensional, un conjunto de estados binarios y una vecindad de radio uno (la célula en cuestión y sus dos células vecinas más cercanas). Dichos autómatas se diferencian únicamente en la función de transición, que puede adoptar hasta 256 ``reglas'' o configuraciones diferentes \cite{b7}.
 	
-	Una de estas reglas, conocida y patentada por Wolfram como Regla 30, presenta un comportamiento errático y aparentemente aleatorio. Si se inicia con una única célula viva, esta se expande en ambas direcciones con cada iteración, siendo capaz de llenar todo el espacio. Sin embargo, el comportamiento de la célula inicial no parece seguir un patrón discernible.
+	Una de estas reglas, conocida y patentada por Wolfram como Regla 30, presenta un comportamiento errático y aparentemente aleatorio. Si se inicia con una única célula viva, esta se expande en ambas direcciones con cada iteración, siendo capaz de llenar todo el espacio. Sin embargo, el comportamiento de la célula inicial no parece seguir un patrón discernible \cite{b8}.
 	
 	Por ello, en este reporte se busca \dots
 	
@@ -137,7 +137,6 @@
 	El autómata celular elemental (ECA, de ahora en adelante, por su traducción al inglés: ``Elementary Cellular Automaton'') se caracteriza por su simplificación de los autómatas celulares y su comportamiento divergente.
 	
 	Sus características principales son:
-	
 	\begin{itemize}
 		\item Una dimensión: $L = 1$. Es decir, las células están agrupadas en una línea infinita de forma consecutiva.
 		
@@ -171,11 +170,11 @@
 	
 	\subsection{Regla 30}
 	
-	La regla 30 equivale a $00011110_2$ en binario. Dada una única célula con valor 1, esta se expande en ambas direcciones con cada iteración, como se muestra en las figuras \ref{img:r30_1} y \ref{img:r30_2}, que ilustran las primeras 23 y 900 generaciones, respectivamente.
+	La regla 30 equivale a $30_{10}=00011110_2$ en binario. Dada una única célula con valor 1, esta se expande en ambas direcciones con cada iteración, como se muestra en las figuras \ref{img:r30_1} y \ref{img:r30_2}, que ilustran las primeras 23 y 900 generaciones, respectivamente.
 	
 	Como se observa en la figura \ref{img:r30_2}, existe un pequeño patrón repetitivo que crece de forma diagonal en el lado izquierdo del historial. Sin embargo, en el lado derecho, el comportamiento no parece tener estabilidad ni un patrón discernible. Si almacenamos el historial de los valores de la célula inicial, se obtiene una secuencia pseudoaleatoria.
 	
-	Aunque no es posible predecir directamente si el siguiente estado será 0 o 1, es posible calcularlo realizando todas las generaciones previas.
+	Hasta el momento no se ha podido predecir directamente si el siguiente estado será 0 o 1, es posible calcularlo realizando todas las generaciones previas.
 	
 	\begin{figure}[H]
 		\centering
@@ -209,6 +208,8 @@
 		\sum_{i = 1}^{n} 2i - 1 = n^2
 	\end{equation*}
 	
+	En un periodo 
+	
 	Para estimar el tiempo y el almacenamiento necesarios, se realizó una prueba inicial con un lote de 100,000 datos. A partir de los resultados, se calcularon los recursos requeridos para almacenar 2,500,000 datos en un disco duro externo.
 	
 	\begin{center}
@@ -239,9 +240,29 @@
 	\clearpage
 	\addcontentsline{toc}{section}{Referencias}
 	\begin{thebibliography}{99}
-		\bibitem{}
+		\bibitem{b1}
+		M. G. Magaña Chávez. ``Autómatas celulares elementales y sus composiciones''. Motivos matemáticos / Matemáticas aplicadas. Accedido el 24 de diciembre de 2024. [En línea]. Disponible: \url{https://motivos.matem.unam.mx/vol6/num1/aplicadas1.html#:~:text=En%201948,%20el%20célebre%20matemático,de%20construir%20a%20otro%20robot}
 		
-	
+		\bibitem{b2}
+		C. A. Rodríguez Garzón, ``Modelamiento de estaciones TransMilenio mediante Autómatas Celulares: lecciones aprendidas'', Ingeniería, vol. 19, n.º 2, diciembre de 2014. Accedido el 28 de diciembre de 2024. [En línea]. Disponible: \url{https://doi.org/10.14483/udistrital.jour.reving.2014.2.a05}
+		
+		\bibitem{b3}
+		V. E. Barros Arenas y H. Gilabert P., ``Modelación de la dinámica Plaga-Parasitoide-Bosque mediante autómatas celulares'', Cienc. \& Investig. For., vol. 14, n.º 2, pp. 311–323, julio de 2008. Accedido el 28 de diciembre de 2024. [En línea]. Disponible: \url{https://doi.org/10.52904/0718-4646.2008.292}
+		
+		\bibitem{b4}
+		J. J. M. Martínez, ``Modelo de autómatas celulares para la dinámica de un mercado financiero'', Económica, pp. 46–94, diciembre de 2018. Accedido el 28 de diciembre de 2024. [En línea]. Disponible: \url{https://doi.org/10.24215/18521649e004}
+		
+		\bibitem{b5}
+		T. Muñoz Jiménez, A. Torres Soto y M. D. Torres Soto, ``Autómatas Celulares Aplicados al Comportamiento de Células de Cáncer Cervicouterino'', Tecnol. Educ. Rev. CONAIC, vol. 6, n.º 1, pp. 44–49, enero de 2021. Accedido el 28 de diciembre de 2024. [En línea]. Disponible: \url{https://doi.org/10.32671/terc.v6i1.48}
+		
+		\bibitem{b6}
+		``Conway's Game of Life - LifeWiki''. Conway's Game of Life. Accedido el 25 de diciembre de 2024. [En línea]. Disponible: \url{https://conwaylife.com/wiki/Conway's_Game_of_Life}
+		
+		\bibitem{b7}
+		Wolfram Research, Inc. ``Elementary Cellular Automaton''. Wolfram MathWorld. Accedido el 28 de diciembre de 2024. [En línea]. Disponible: \url{https://mathworld.wolfram.com/ElementaryCellularAutomaton.html}
+		
+		\bibitem{b8}
+		Wolfram Research, Inc. ``Rule 30''. Wolfram MathWorld. Accedido el 28 de diciembre de 2024. [En línea]. Disponible: \url{https://mathworld.wolfram.com/Rule30.html}
 		
 	\end{thebibliography}
 	

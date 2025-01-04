@@ -17,6 +17,7 @@ int displayMenu();
 
 void calculateGenerations();
 // void graphicMode();
+void mainColumn();
 void primeAnalisis();
 
 int main()
@@ -32,6 +33,9 @@ int main()
         // graphicMode();
         break;
     case 3:
+        mainColumn();
+        break;
+    case 4:
         primeAnalisis();
         break;
     }
@@ -44,7 +48,8 @@ int mainMenu()
     int option;
     cout << "1) Generations\n";
     cout << "2) Graphic mode\n";
-    cout << "3) Prime analisis\n";
+    cout << "3) Main column size \n";
+    cout << "4) Prime analisis\n";
 
     cin >> option;
 
@@ -124,6 +129,29 @@ void calculateGenerations()
 //     Grapher gui(1920, 1080, "Elementary Cellular Automaton", {255, 255, 255}, eca);
 //     gui.mainLoop();
 // }
+
+void mainColumn()
+{
+    Rule30 eca;
+    vector<bool> column = loadBoolVector("data/central.bin");
+    column.resize(eca.getGenerationCount());
+
+    for (int i = eca.getMinGeneration(); i <= eca.getGenerationCount(); i++)
+    {
+        vector<bool> space = eca.getSpace(i);
+        column[i - 1] = space[space.size() / 2];
+    }
+
+    // Display mid vector
+    for (const bool &value : column)
+        cout << value << " ";
+
+    std::cout << "Size: " << column.size();
+
+    saveBoolVector(column, "data/central");
+
+    column.clear();
+}
 
 void primeAnalisis()
 {
