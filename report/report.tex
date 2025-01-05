@@ -125,9 +125,9 @@
 	
 	Por otro lado, el Autómata Celular Elemental es una colección de autómatas que comparten un espacio unidimensional, un conjunto de estados binarios y una vecindad de radio uno (la célula en cuestión y sus dos células vecinas más cercanas). Dichos autómatas se diferencian únicamente en la función de transición, que puede adoptar hasta 256 ``reglas'' o configuraciones diferentes \cite{b7}.
 	
-	Una de estas reglas, conocida y patentada por Wolfram como Regla 30, presenta un comportamiento errático y aparentemente aleatorio. Si se inicia con una única célula viva, esta se expande en ambas direcciones con cada iteración, siendo capaz de llenar todo el espacio. Sin embargo, el comportamiento de la célula inicial no parece seguir un patrón discernible \cite{b8}.
+	Una de estas reglas, conocida y patentada por Wolfram como Regla 30, presenta un comportamiento errático y aparentemente aleatorio. Si se inicia con una única célula viva, esta se expande en ambas direcciones con cada iteración, siendo capaz de llenar todo el espacio. Sin embargo, el comportamiento de la célula inicial no parece seguir un patrón discernible \cite{b8}. Ademas, no parece existir una tendencia de un estado sobre el otro.
 	
-	Por ello, en este reporte se busca \dots
+	Por ello, en este reporte se propone un análisis estadístico sobre el primer millón de generaciones, esto con el objetivo de encontrar un patrón en la frecuencia de aparición de unos y ceros cada cierta segmentación.
 	
 	\clearpage
 	\section{Marco Teórico}
@@ -192,13 +192,13 @@
 	
 	\section{Metodología}
 	
-	El objetivo principal es identificar un patrón en la columna principal del autómata celular. El primer análisis consiste en dividir el vector en todos los factores primos y medir la frecuencia con la que la célula adquiere el valor de 1.
+	El objetivo principal es identificar un patrón en la columna principal del autómata celular. El análisis consiste en dividir el vector en todos los factores primos y medir la frecuencia con la que la célula adquiere el valor de 1.
 	
 	\subsection{Generación de datos}
 	
 	Se diseñó un programa en C++ con el objetivo de generar el mayor número posible de generaciones. Cada generación es una secuencia de valores booleanos que puede representarse como una cadena de valores binarios y almacenarse como una secuencia de bytes en archivos binarios.
 	
-	Cada generación se guarda en un archivo independiente, permitiendo el acceso directo a cada una de ellas. Esto asegura que, dada una generación $n$, sea posible calcular la generación $n+1$ sin necesidad de almacenar las $n-1$ generaciones previas.
+	Cada generación se guarda en un archivo independiente, permitiendo el acceso directo a cada una de ellas. Esto asegura que, dada una generación $n$, sea posible calcular la generación $n+1$ sin necesidad de almacenar las $n-1$ generaciones anteriores.
 	
 	Debido a las limitaciones de visualización del equipo de cómputo, se implementó una función que comprime todas las generaciones almacenadas en un único archivo.
 	
@@ -208,34 +208,41 @@
 		\sum_{i = 1}^{n} 2i - 1 = n^2
 	\end{equation*}
 	
-	En un periodo 
+	Se calcularon los datos en lotes de 100,00 generaciones. En la tabla \ref{tab:rec} se muestra el tiempo y espacio requerido para el almacenamiento y procesamiento de 2.5 millones de generaciones.
 	
-	Para estimar el tiempo y el almacenamiento necesarios, se realizó una prueba inicial con un lote de 100,000 datos. A partir de los resultados, se calcularon los recursos requeridos para almacenar 2,500,000 datos en un disco duro externo.
+	\begin{table}[h!]
+		\begin{center}
+			\begin{tabular}{|c|c|c|}
+				\hline
+				& \textbf{Valor calculado para} & \textbf{Valor aproximado para} \\
+				& \textbf{100,000} & \textbf{2,500,000} \\
+				\hline
+				\textbf{Tiempo} & 32 minutos & $\approx$ 20,000 minutos $\approx$ 2 semanas \\
+				\hline
+				\textbf{Espacio} & 1.3 GB & 782 GB \\
+				\hline
+			\end{tabular}
+		\end{center}
+		\label{tab:rec}
+		\caption{Recursos utilizado}
+	\end{table}
 	
-	\begin{center}
-		\begin{tabular}{|c|c|c|}
-			\hline
-			& \textbf{Valor calculado para} & \textbf{Valor aproximado para} \\
-			& \textbf{100,000} & \textbf{2,500,000} \\
-			\hline
-			\textbf{Tiempo} & 32 minutos & $\approx$ 20,000 minutos $\approx$ 2 semanas \\
-			\hline
-			\textbf{Espacio} & 1.3 GB & $\approx$ 820 GB \\
-			\hline
-		\end{tabular}
-	\end{center}
 	
 	\subsection{Extracción de características}
 	
 	Se diseñó una función que itera sobre todas las generaciones actualmente cargadas y extrae el valor de la columna principal, es decir, el valor en la posición $n$. Este procedimiento se realiza para todas las generaciones, hasta obtener un vector de valores booleanos que, a su vez, se reescribe en un archivo binario.
 	
-	Además, se generan previamente los primeros $m$ números primos menores a 1,250,000 para evitar calcularlos en tiempo de ejecución.
+	Además, se generan previamente los primeros $m$ números primos menores a 1,250,000 para evitar calcularlos en tiempo de ejecución. Se define este tamaño ya que es el numero máximo que un vector de 2.5 millones puede ser dividido en mas de una unidad entera.
 	
 	\subsection{Múltiplos primos}
 	
-	Se divide el vector de la columna principal en sub-vectores del mismo tamaño, posteriormente se almacena la frecuencia del estado 1 en cada vector con el objetivo de identificar un patrón en la frecuencia. Este análisis se realiza para sub-vectores de todos los tamaños menores a 1,250,000, dado que este es el tamaño máximo que permite realizar comparaciones (Dos vectores).
+	El vector de datos de la columna principal se divide en sub-vectores, cada uno del mismo tamaño $n$. Posteriormente, se almacena la frecuencia del estado 1 en cada sub- con el objetivo de extraer la frecuencia de esta estado en cada partición del vector original. Este paso se repite generando sub-vectores de todos los tamaños $n$ menores a 1.25 millones, ya que es el segundo divisor mas grande de 2.5 millones.
 	
-	Por el teorema fundamental de la aritmética, todo número puede expresarse como el producto de números primos. Por esta razón, es suficiente realizar el análisis para números primos, ya que, si existe un patrón en las frecuencias, dicho patrón debería aparecer en las componentes primarias.
+	Por el teorema fundamental de la aritmética, todo número puede expresarse como el producto de números primos. Por esta razón, no es necesario calcular las frecuencias de todos los $n$ menores a 1.25 millones, sino unicamente de todos aquellos números primos menores a 1.25 millones. Si existe un patrón en la frecuencias, dicho patrón se espera estar presente  en las frecuencias de sus componentes primarias.
+	
+	\subsection{Histograma}
+	
+	
 	
 	\clearpage
 	\addcontentsline{toc}{section}{Referencias}

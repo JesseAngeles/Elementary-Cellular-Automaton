@@ -2,6 +2,8 @@
 
 #include "ECA/ElementaryCellularAutomaton.hpp"
 #include "ECA/Rule30.hpp"
+#include "ECA/StatisticalAnalysis.hpp"
+#include "ECA/HistogramAnalysis.hpp"
 
 // #include "GUI/Grapher.h"
 
@@ -155,20 +157,86 @@ void mainColumn()
 
 void primeAnalisis()
 {
-    // Cargar datos
+    int option = 1;
+    cout << "0) Generate\n";
+    cout << "1) Analisis\n";
+    cout << "2) histogram \n";
+    cin >> option;
+
     vector<bool> column = loadBoolVector("data/central.bin");
     vector<int> primes = loadIntVector("data/primes.csv");
     vector<vector<int>> prime_analisis = loadMatrix("data/prime_analisis.csv");
-    map<int, vector<int>> populations = matrixToMap(prime_analisis);
 
-    // Ajustar parametros
-    primes.insert(primes.begin(), 1);
-    // column.resize(2000);
-    // primes.resize(10);
+    switch (option)
+    {
+    case 0:
+    {
+        // Cargar datos
+        vector<vector<int>> prime_analisis = loadMatrix("data/prime_analisis.csv");
+        map<int, vector<int>> populations = matrixToMap(prime_analisis);
 
-    Rule30 eca;
-    eca.primeNumberAnalisis(populations, column, primes);
-    vector<vector<int>> prime_matrix = mapToMatrix(populations);
+        // Ajustar parametros
+        primes.insert(primes.begin(), 1);
 
-    saveIntMatrix(prime_matrix, "data/prime_analisis.csv");
+        Rule30 eca;
+        eca.primeNumberAnalisis(populations, column, primes);
+        vector<vector<int>> prime_matrix = mapToMatrix(populations);
+
+        saveIntMatrix(prime_matrix, "data/prime_analisis.csv");
+
+        break;
+    }
+    case 1:
+    {
+        vector<string> headers = {"id", "prime", "size", "max",
+                                  "mean", "media", "mode",
+                                  "sigma", "sigma_b",
+                                  "m2", "m3", "m4"};
+        vector<vector<long double>> matrix = readCSV("data/statistical_analysis.csv");
+        long double i = matrix.size();
+        prime_analisis = std::vector<std::vector<int>>(prime_analisis.begin() + i, prime_analisis.end());
+
+        for (const std::vector<int> &prime_line : prime_analisis)
+        {
+            vector<long double> instance;
+
+            if (prime_line.size() <= 2)
+                break;
+
+            std::vector<int> data(prime_line.begin() + 1, prime_line.end() - 1);
+            long double mean_v = mean(data);
+
+            instance = {i++,
+                        static_cast<long double>(prime_line[0]),
+                        static_cast<long double>(data.size()),
+                        static_cast<long double>(prime_line[prime_line.size() - 1]),
+                        mean_v,
+                        median(data),
+                        static_cast<long double>(mode(data)),
+                        standardDeviation(data, mean_v),
+                        standardDeviation(data, mean_v, true),
+                        momentAboutMean(data, 2, mean_v),
+                        momentAboutMean(data, 3, mean_v),
+                        momentAboutMean(data, 4, mean_v)};
+
+            matrix.push_back(instance);
+        }
+
+        saveCSV(matrix, headers, "./data/statistical_analysis.csv");
+        break;
+    }
+    case 2:
+    {
+        vector<vector<pair<int, int>>> matrix;
+
+        for (int j = 0; j < 1000000; j++)
+            matrix.push_back(generateHistogram(prime_analisis[j]));
+
+        saveIntPairMatrix(matrix, "./data/histogram.csv");
+
+        break;
+    }
+    default:
+        break;
+    }
 }

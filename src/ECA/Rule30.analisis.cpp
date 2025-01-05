@@ -33,25 +33,4 @@ void Rule30::primeNumberAnalisis(std::map<int, std::vector<int>> &current,
         frecuencies.push_back(frecuencies.size() * prime);
         current[prime] = frecuencies;
     }
-
-    // // Iterate the prime numbers
-    // for (const int &prime : primes)
-    // {
-    //     std::vector<int> frecuencies;
-    //     int count = 0;
-
-    //     // Iterate de main column
-    //     for (int i = 0; i < column.size(); i++)
-    //     {
-    //         count += column[i];
-    //         if ((i + 1) % prime == 0)
-    //         {
-    //             frecuencies.push_back(count);
-    //             count = 0;
-    //         }
-    //     }
-
-    //     frecuencies.push_back(frecuencies.size() * prime);
-    //     current[prime] = frecuencies;
-    // }
 }

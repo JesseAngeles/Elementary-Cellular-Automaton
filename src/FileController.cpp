@@ -60,6 +60,70 @@ void saveIntMatrix(const std::vector<std::vector<int>> &matrix, const std::strin
     file.close();
 }
 
+void saveCSV(const std::vector<std::vector<long double>> &data,
+             const std::vector<std::string> &headers,
+             const std::string &filename)
+{
+    // Abrir archivo en modo de escritura
+    std::ofstream file(filename);
+
+    // Configuración para mayor precisión en formato científico
+    file << std::scientific << std::setprecision(15);
+
+    // Escribir encabezados
+    for (const std::string &header : headers)
+        file << header << ",";
+    file << std::endl;
+
+    // Escribir los elementos del vector en el archivo
+    for (const std::vector<long double> &vector : data)
+    {
+        // Imprimir los primeros tres valores "tal cual"
+        for (size_t i = 0; i < vector.size(); ++i)
+        {
+            if (i < 4) // Los primeros tres valores en formato normal
+            {
+                file << std::fixed << vector[i];
+            }
+            else // El resto en formato científico
+            {
+                file << std::scientific << vector[i];
+            }
+
+            // Añadir coma después de cada valor, excepto al final de la fila
+            if (i != vector.size() - 1)
+                file << ",";
+        }
+        file << std::endl;
+    }
+
+    // Cerrar el archivo
+    file.close();
+}
+
+void saveIntPairMatrix(const std::vector<std::vector<std::pair<int, int>>> &matrix, const std::string &filename)
+{
+    std::ofstream outFile(filename);
+    if (!outFile.is_open())
+    {
+        throw std::runtime_error("Error al abrir el archivo para escribir: " + filename);
+    }
+
+    for (const auto &row : matrix)
+    {
+        for (size_t i = 0; i < row.size(); ++i)
+        {
+            const auto &pair = row[i];
+            outFile << pair.first << ":" << pair.second; // Guardar cada par como "valor:frecuencia"
+            if (i != row.size() - 1)
+                outFile << ","; // Separar pares con comas
+        }
+        outFile << "\n"; // Nueva línea al final de cada fila
+    }
+
+    outFile.close();
+}
+
 std::vector<bool> loadBoolVector(const std::string &filename)
 {
     std::ifstream file;
@@ -155,6 +219,63 @@ std::vector<std::vector<int>> loadMatrix(const std::string &filename)
     return prime_analisis;
 }
 
+std::vector<std::vector<long double>> readCSV(const std::string &filename)
+{
+    std::vector<std::vector<long double>> data;
+    std::ifstream file(filename);
+
+    if (!file.is_open())
+    {
+        throw std::runtime_error("Error: No se pudo abrir el archivo " + filename);
+    }
+
+    std::string line;
+    bool first_line = true;
+
+    while (std::getline(file, line))
+    {
+        std::stringstream line_stream(line);
+        std::string cell;
+        std::vector<long double> row;
+
+        // Ignorar la primera línea de encabezados
+        if (first_line)
+        {
+            first_line = false;
+            continue;
+        }
+
+        // Leer cada celda separada por comas
+        while (std::getline(line_stream, cell, ','))
+        {
+            // Manejar celdas vacías
+            if (cell.empty())
+            {
+                row.push_back(0.0L); // O un valor por defecto
+            }
+            else
+            {
+                try
+                {
+                    row.push_back(std::stold(cell));
+                }
+                catch (const std::invalid_argument &)
+                {
+                    throw std::runtime_error("Error: No se pudo convertir el valor '" + cell + "' a long double.");
+                }
+            }
+        }
+
+        if (!row.empty())
+        {
+            data.push_back(row);
+        }
+    }
+
+    file.close();
+    return data;
+}
+
 void truncateVector(std::vector<bool> &vector)
 {
     size_t start = 0;
@@ -172,4 +293,38 @@ void truncateVector(std::vector<bool> &vector)
 
     // Crear un nuevo vector con los valores entre 'inicio' y 'fin'
     vector = std::vector<bool>(vector.begin() + start, vector.begin() + end);
+}
+
+std::vector<std::vector<std::pair<int, int>>> loadIntPairMatrix(const std::string &filename)
+{
+    std::ifstream inFile(filename);
+    if (!inFile.is_open())
+    {
+        throw std::runtime_error("Error al abrir el archivo para leer: " + filename);
+    }
+
+    std::vector<std::vector<std::pair<int, int>>> matrix;
+    std::string line;
+
+    while (std::getline(inFile, line))
+    {
+        std::vector<std::pair<int, int>> row;
+        std::stringstream ss(line);
+        std::string cell;
+
+        while (std::getline(ss, cell, ','))
+        {
+            size_t colonPos = cell.find(':');
+            if (colonPos != std::string::npos)
+            {
+                int value = std::stoi(cell.substr(0, colonPos));
+                int frequency = std::stoi(cell.substr(colonPos + 1));
+                row.emplace_back(value, frequency);
+            }
+        }
+        matrix.push_back(row);
+    }
+
+    inFile.close();
+    return matrix;
 }
