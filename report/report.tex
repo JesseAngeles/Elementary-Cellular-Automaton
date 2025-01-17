@@ -8,6 +8,33 @@
 \usepackage{url}
 \usepackage{float}
 
+\usepackage{xcolor}
+\usepackage{listings}
+
+% Definir colores
+\definecolor{bgcolor}{RGB}{250, 250, 250} % Fondo claro
+\definecolor{commentcolor}{RGB}{0, 128, 0} % Comentarios en verde
+\definecolor{keywordcolor}{RGB}{0, 0, 128} % Palabras clave en azul oscuro
+\definecolor{stringcolor}{RGB}{163, 21, 21} % Cadenas en rojo oscuro
+
+% Configuración de lstlisting para C++
+\lstdefinestyle{modernCpp}{
+	language=C++,
+	backgroundcolor=\color{bgcolor},
+	basicstyle=\ttfamily\small,
+	keywordstyle=\color{keywordcolor}\bfseries,
+	commentstyle=\color{commentcolor}\itshape,
+	stringstyle=\color{stringcolor},
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	stepnumber=1,
+	frame=single,
+	tabsize=4,
+	breaklines=true,
+	showstringspaces=false,
+	captionpos=b
+}
+
 \title{Autómata Celular Elemental y la regla 30}
 \author{Erick Jesse Angeles López}
 
@@ -192,15 +219,11 @@
 	
 	\section{Metodología}
 	
-	El objetivo principal es identificar un patrón en la columna principal del autómata celular. El análisis consiste en dividir el vector en todos los factores primos y medir la frecuencia con la que la célula adquiere el valor de 1.
+	\subsection{Producción de generaciones}
 	
-	\subsection{Generación de datos}
+	Debido al computo intensivo requerido, se diseño un programa en C++ que permite generar, cifrar y almacenar cada nueva generación en un archivo binario. Cada generación se componen de una secuencia de valores booleanos (equivalente a binario), por lo que se agrupan en octetos para formar bytes.
 	
-	Se diseñó un programa en C++ con el objetivo de generar el mayor número posible de generaciones. Cada generación es una secuencia de valores booleanos que puede representarse como una cadena de valores binarios y almacenarse como una secuencia de bytes en archivos binarios.
-	
-	Cada generación se guarda en un archivo independiente, permitiendo el acceso directo a cada una de ellas. Esto asegura que, dada una generación $n$, sea posible calcular la generación $n+1$ sin necesidad de almacenar las $n-1$ generaciones anteriores.
-	
-	Debido a las limitaciones de visualización del equipo de cómputo, se implementó una función que comprime todas las generaciones almacenadas en un único archivo.
+	Las generaciones se almacenan en archivos diferentes para poder acceder a ellas de forma independiente. Esto permite que, dada una generación $n$, se pueda calcular la generación $n + 1$ sin la necesidad de almacenar las $n - 1$ generaciones anteriores. 
 	
 	El número de operaciones depende del tamaño del vector, y dado que cada nueva generación aumenta en dos unidades y tiene una longitud impar, se puede utilizar la fórmula de la suma de Gauss para números impares:
 	
@@ -208,25 +231,18 @@
 		\sum_{i = 1}^{n} 2i - 1 = n^2
 	\end{equation*}
 	
-	Se calcularon los datos en lotes de 100,00 generaciones. En la tabla \ref{tab:rec} se muestra el tiempo y espacio requerido para el almacenamiento y procesamiento de 2.5 millones de generaciones.
+	Fueron requeridos 6.25 millones de operaciones para producir 2.5 millones de generaciones almacenadas en 782 GB.
 	
-	\begin{table}[h!]
-		\begin{center}
-			\begin{tabular}{|c|c|c|}
-				\hline
-				& \textbf{Valor calculado para} & \textbf{Valor aproximado para} \\
-				& \textbf{100,000} & \textbf{2,500,000} \\
-				\hline
-				\textbf{Tiempo} & 32 minutos & $\approx$ 20,000 minutos $\approx$ 2 semanas \\
-				\hline
-				\textbf{Espacio} & 1.3 GB & 782 GB \\
-				\hline
-			\end{tabular}
-		\end{center}
-		\label{tab:rec}
-		\caption{Recursos utilizado}
-	\end{table}
+	Sea la actual generación de tamaño $m$, se crea un vector de tamaño $m + 2$ y se itera sobre cada elemento para obtener el nuevo valor aplicando la regla 30 a la vecindad como se muestra en el fragmento de código \ref{step}. Finalmente se codifica y se almacena en un archivo de tipo binario.
 	
+	\begin{lstlisting}[style=modernCpp, caption=Ejemplo de código en C++,  label=step]
+		#include <iostream>
+		
+		int main() {
+			std::cout << "Hola, mundo!" << std::endl; // Imprime un mensaje
+			return 0;
+		}
+	\end{lstlisting}
 	
 	\subsection{Extracción de características}
 	
