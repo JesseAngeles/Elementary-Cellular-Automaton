@@ -40,11 +40,6 @@ public:
     void step();
     void compressAndClean();
 
-    // Prime number analisis
-    void primeNumberAnalisis(std::map<int, std::vector<int>> &current,
-                             const std::vector<bool> &column,
-                             const std::vector<int> &primes);
-
     // Getters
     int getGenerationCount() const { return generation_count; }
     int getMinGeneration() const { return min_generation; }
