@@ -235,6 +235,8 @@
 	
 	Sea la actual generación de tamaño $m$, se crea un vector de tamaño $m + 2$ y se itera sobre cada elemento para obtener el nuevo valor aplicando la regla 30 a la vecindad como se muestra en el fragmento de código \ref{step}. Finalmente se codifica y se almacena en un archivo de tipo binario.
 	
+	Finalmente, se extra el valor de la columna principal de cada generación para formar el vector de interés.
+	
 	\begin{lstlisting}[style=modernCpp, caption=Ejemplo de código en C++,  label=step]
 		#include <iostream>
 		
@@ -246,6 +248,8 @@
 	
 	\subsection{Extracción de características}
 	
+	
+
 	Se diseñó una función que itera sobre todas las generaciones actualmente cargadas y extrae el valor de la columna principal, es decir, el valor en la posición $n$. Este procedimiento se realiza para todas las generaciones, hasta obtener un vector de valores booleanos que, a su vez, se reescribe en un archivo binario.
 	
 	Además, se generan previamente los primeros $m$ números primos menores a 1,250,000 para evitar calcularlos en tiempo de ejecución. Se define este tamaño ya que es el numero máximo que un vector de 2.5 millones puede ser dividido en mas de una unidad entera.
