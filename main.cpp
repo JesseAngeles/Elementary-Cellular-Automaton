@@ -22,8 +22,8 @@ void attractors();
 
 int main()
 {
-    // int option = mainMenu();
-    int option = 3;
+    int option = mainMenu();
+    // int option = 3;
 
     switch (option)
     {
@@ -145,36 +145,28 @@ void mainColumn()
 void attractors()
 {
     vector<bool> column = loadBoolVector("data/central.bin");
+    vector<int> primes = loadIntVector("data/primes.csv");
+
     if (column.size() % 100 != 0)
         column.resize(column.size() + 100 - column.size() % 100);
 
-    // for(auto b : column)
-    //     cout << b;
-    // cout << endl;
-    cout << column.size() << endl;
+    // column.resize(1000000);
+    primes.resize(30);
 
-    vector<vector<bool>> splited = splitVector(column, 1);
-    std::pair<std::vector<std::vector<int>>, std::vector<std::vector<bool>>> data = attractors(splited);
-    std::vector<std::vector<int>> attractor = data.first;
-    std::vector<std::vector<bool>> names = data.second;
+    cout << "size: " << column.size() << endl;
 
-    cout << "\t";
-    for (auto name : names)
+    vector<unordered_map<vector<bool>, vector<pair<vector<bool>, int>>>> transitions;
+
+    for(const int &prime : primes)
     {
-        for (auto c : name)
-            cout << c;
-        cout << "\t";
+        if(column.size() < prime)
+            break;
+        
+        vector<vector<bool>> splited = splitVector(column, prime);
+        unordered_map<vector<bool>, vector<pair<vector<bool>, int>>> data = attractors(splited);
+        
+        transitions.push_back(data);
     }
-    cout << endl;
 
-    for (int i = 0; i < attractor.size(); i++)
-    {
-        for (auto c : names[i])
-            cout << c;
-
-        cout << "\t";
-        for (auto c : attractor[i])
-            cout << c << "\t";
-        cout << endl;
-    }
+    saveTransition(transitions, "./data/attractors.csv");
 }
