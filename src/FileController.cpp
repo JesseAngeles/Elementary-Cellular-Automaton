@@ -18,6 +18,14 @@ std::vector<char> makeVectorWrittable(const std::vector<bool> &vector)
     return byte_buffer;
 }
 
+std::string vectorToString(const std::vector<bool> &vec)
+{
+    std::string result;
+    for (bool b : vec)
+        result += (b ? '1' : '0');
+    return result;
+}
+
 void saveBoolVector(const std::vector<bool> &vector, const std::string &filename)
 {
     std::vector<char> writtable_vector = makeVectorWrittable(vector);
@@ -122,6 +130,34 @@ void saveIntPairMatrix(const std::vector<std::vector<std::pair<int, int>>> &matr
     }
 
     outFile.close();
+}
+
+void saveTransition(
+    const std::vector<std::unordered_map<std::vector<bool>, std::vector<std::pair<std::vector<bool>, int>>>> &data,
+    const std::string &filename)
+{
+    std::ofstream file(filename);
+
+    // Escribir encabezado
+    file << "from,to,weight\n";
+
+    // Escribir cada transición
+    for (const auto &adjList : data)
+    {
+        for (const auto &node : adjList)
+        {
+            std::string from = vectorToString(node.first);
+            for (const auto &edge : node.second)
+            {
+                std::string to = vectorToString(edge.first);
+                int weight = edge.second;
+                file << from << "," << to << "," << weight << "\n";
+            }
+        }
+        file << "\n";
+    }
+
+    file.close();
 }
 
 std::vector<bool> loadBoolVector(const std::string &filename)
