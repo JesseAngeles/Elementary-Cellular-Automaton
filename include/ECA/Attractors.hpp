@@ -2,6 +2,7 @@
 #include <set>
 #include <cmath>
 #include <algorithm>
+#include <unordered_map>
 
 std::vector<std::vector<bool>> splitVector(std::vector<bool> &column, const int prime)
 {
@@ -26,28 +27,52 @@ std::set<std::vector<bool>> getSet(std::vector<std::vector<bool>> &splited_vecto
     return set_attractor;
 }
 
-std::pair<std::vector<std::vector<int>>, std::vector<std::vector<bool>>> attractors(std::vector<std::vector<bool>> &splited_vectors)
+// Obtiene vectores únicos en el orden en que aparecen
+std::vector<std::vector<bool>> getUniqueVectors(std::vector<std::vector<bool>> &splited_vectors)
 {
-    std::set<std::vector<bool>> set_attractor = getSet(splited_vectors);
-    std::vector<std::vector<bool>> vector_attractor(set_attractor.begin(), set_attractor.end());
+    std::vector<std::vector<bool>> unique_vectors;
+    std::unordered_map<std::vector<bool>, int> seen;
 
-    int lenght = splited_vectors[0].size();
-    std::vector<std::vector<int>> attractors(std::pow(2, lenght), std::vector<int>(std::pow(2, lenght), 0));
+    for (const auto &vec : splited_vectors)
+    {
+        if (seen.find(vec) == seen.end()) // Solo agregar si no ha sido visto antes
+        {
+            seen[vec] = unique_vectors.size();
+            unique_vectors.push_back(vec);
+        }
+    }
+    return unique_vectors;
+}
+
+// Genera la lista de adyacencia con nodos representados como std::vector<bool>
+std::unordered_map<std::vector<bool>, std::vector<std::pair<std::vector<bool>, int>>> attractors(std::vector<std::vector<bool>> &splited_vectors)
+{
+    std::vector<std::vector<bool>> vector_attractor = getUniqueVectors(splited_vectors);
+    std::unordered_map<std::vector<bool>, std::vector<std::pair<std::vector<bool>, int>>> adjacencyList;
 
     std::vector<bool> current = splited_vectors[0];
 
-    for (int i = 1; i < splited_vectors.size(); i++)
+    for (size_t i = 1; i < splited_vectors.size(); i++)
     {
-        auto it = std::find(vector_attractor.begin(), vector_attractor.end(), current);
-        int from = std::distance(vector_attractor.begin(), it); 
+        std::vector<bool> from = current;
+        std::vector<bool> to = splited_vectors[i];
 
-        it = std::find(vector_attractor.begin(), vector_attractor.end(), splited_vectors[i]);
-        int to = std::distance(vector_attractor.begin(), it); 
-
-        attractors[from][to]++;
+        // Verificar si la conexión ya existe y aumentar el peso
+        bool found = false;
+        for (auto &edge : adjacencyList[from])
+        {
+            if (edge.first == to)
+            {
+                edge.second++;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            adjacencyList[from].emplace_back(to, 1);
 
         current = splited_vectors[i];
     }
 
-    return make_pair(attractors, vector_attractor);
+    return adjacencyList;
 }
