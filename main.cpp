@@ -22,8 +22,8 @@ void attractors();
 
 int main()
 {
-    int option = mainMenu();
-    // int option = 3;
+    // int option = mainMenu();
+    int option = 3;
 
     switch (option)
     {
@@ -125,21 +125,27 @@ void mainColumn()
     vector<bool> column = loadBoolVector("data/central.bin");
     column.resize(eca.getGenerationCount());
 
-    for (int i = eca.getMinGeneration(); i <= eca.getGenerationCount(); i++)
-    {
-        vector<bool> space = eca.getSpace(i);
-        column[i - 1] = space[space.size() / 2];
-    }
+    if (column.size() % 100 != 0)
+        column.resize(column.size() + 100 - column.size() % 100);
 
-    // Display mid vector
-    for (const bool &value : column)
-        cout << value << " ";
+    cout << "size: " << column.size() << endl;
 
-    std::cout << "Size: " << column.size();
 
-    saveBoolVector(column, "data/central");
+    // for (int i = eca.getMinGeneration(); i <= eca.getGenerationCount(); i++)
+    // {
+    //     vector<bool> space = eca.getSpace(i);
+    //     column[i - 1] = space[space.size() / 2];
+    // }
 
-    column.clear();
+    // // Display mid vector
+    // for (const bool &value : column)
+    //     cout << value << " ";
+
+    // std::cout << "Size: " << column.size();
+
+    // saveBoolVector(column, "data/central");
+
+    // column.clear();
 }
 
 void attractors()
@@ -151,22 +157,28 @@ void attractors()
         column.resize(column.size() + 100 - column.size() % 100);
 
     // column.resize(1000000);
-    primes.resize(30);
+    primes.resize(3);
 
     cout << "size: " << column.size() << endl;
+    int value = 1;
+    saveTransition(evolutiveAttractor(column, 1),"./data/attractors_" + to_string(value) + ".csv");
 
-    vector<unordered_map<vector<bool>, vector<pair<vector<bool>, int>>>> transitions;
+    int sum = 0;
+    for (const auto c : column)
+        sum += c;
+    
+    // vector<unordered_map<vector<bool>, vector<pair<vector<bool>, int>>>> transitions;
 
-    for(const int &prime : primes)
-    {
-        if(column.size() < prime)
-            break;
+    // for(const int &prime : primes)
+    // {
+    //     if(column.size() < prime)
+    //         break;
         
-        vector<vector<bool>> splited = splitVector(column, prime);
-        unordered_map<vector<bool>, vector<pair<vector<bool>, int>>> data = attractors(splited);
+    //     vector<vector<bool>> splited = splitVector(column, prime);
+    //     unordered_map<vector<bool>, vector<pair<vector<bool>, int>>> data = attractors(splited);
         
-        transitions.push_back(data);
-    }
+    //     transitions.push_back(data);
+    // }
 
-    saveTransition(transitions, "./data/attractors.csv");
+    // saveTransition(transitions, "./data/attractors.csv");
 }
