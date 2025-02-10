@@ -1,0 +1,10 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Introducción}{3}{}%
+\contentsline {section}{\numberline {2}Marco Teórico}{5}{}%
+\contentsline {subsection}{\numberline {2.1}Autómata Celular Elemental}{5}{}%
+\contentsline {subsection}{\numberline {2.2}Regla 30}{6}{}%
+\contentsline {section}{\numberline {3}Metodología}{8}{}%
+\contentsline {subsection}{\numberline {3.1}Divisores}{8}{}%
+\contentsline {subsection}{\numberline {3.2}Histograma}{8}{}%
+\contentsline {subsection}{\numberline {3.3}Incremento de los datos}{9}{}%
+\contentsline {section}{Referencias}{10}{}%

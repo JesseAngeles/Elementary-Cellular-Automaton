@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <title>Avances de Investigación</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Reporte de Investigación</h1>
+        <h2>Introducción</h2>
+        <p>Los autómatas celulares (AC) fueron concebidos por John Von Neumann en 1948 mientras buscaba diseñar un sistema capaz de auto-replicarse. Stanislaw Ulam le sugirió modelar matemáticamente este concepto, lo que llevó a la creación de los AC.</p>
+        <h2>Marco Teórico</h2>
+        <h3>Autómata Celular Elemental</h3>
+        <p>Se caracteriza por su simplicidad y comportamiento divergente. Sus características incluyen:</p>
+        <ul>
+            <li>Una dimensión.</li>
+            <li>Dos estados posibles por célula.</li>
+            <li>Vecindad de radio uno.</li>
+            <li>256 reglas posibles.</li>
+        </ul>
+        <img src="../img/eca1.png" alt="ECA 210">
+        <h3>Regla 30</h3>
+        <p>La Regla 30 presenta un comportamiento aparentemente aleatorio. A continuación, se muestran ejemplos de su evolución:</p>
+        <img src="../img/r30_1.png" alt="Primeras 23 generaciones de la Regla 30">
+        <img src="../img/r30_2.png" alt="Primeras 900 generaciones de la Regla 30">
+        <h2>Metodología</h2>
+        <h3>Producción de generaciones</h3>
+        <p>Se diseñó un programa en C++ para generar y almacenar generaciones de la Regla 30 en archivos binarios.</p>
+        <pre>
+#include &lt;iostream&gt;
+int main() {
+    std::cout &lt;&lt; "Hola, mundo!" &lt;&lt; std::endl;
+    return 0;
+}
+        </pre>
+        <h3>Extracción de características</h3>
+        <p>Se analiza la columna principal de cada generación para encontrar patrones en la frecuencia de aparición de unos y ceros.</p>
+        <h2>Referencias</h2>
+        <ul>
+            <li><a href="https://motivos.matem.unam.mx/vol6/num1/aplicadas1.html">Autómatas celulares elementales y sus composiciones</a></li>
+            <li><a href="https://doi.org/10.14483/udistrital.jour.reving.2014.2.a05">Modelamiento de estaciones TransMilenio mediante Autómatas Celulares</a></li>
+            <li><a href="https://doi.org/10.52904/0718-4646.2008.292">Modelación de la dinámica Plaga-Parasitoide-Bosque mediante autómatas celulares</a></li>
+        </ul>
+    </div>
+</body>
+</html>
