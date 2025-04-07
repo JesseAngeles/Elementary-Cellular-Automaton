@@ -165,3 +165,23 @@ footer {
     50% { box-shadow: 0 0 20px #2c3e50; }
     100% { box-shadow: 0 0 10px #2c3e50; }
 }
+
+.gif-scroll-container {
+    max-height: 800px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .gif-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+    gap: 10px;
+  }
+  
+  .gif-grid img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte de Investigación</title>
+    <title>Research report</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -38,238 +38,232 @@
 </head>
 <body>
     <header>
-        <h1>Automata Celular Elemental y la Regla 30</h1>
-        <p class="fecha">Fecha: TODO</p>
+        <h1>Elementary Cellular Automaton and the Rule 30</h1>
+        <p class="fecha">Date: April 6 2025</p>
     </header>
         
     <section id="resumen" class="resumen">
-        <h2>Resumen</h2>
-        <p></p>
+        <h2>Abstract</h2>
+        <p>
+            An analysis of evolutionary statistics is proposed on the main column of Rule 30 of the elementary cellular automaton proposed by Stephen Wolfram, to examine the behavior of 5 million data points partitioned under different divisors, with the aim of studying the behavior and the relationship between zeros and ones.
+            <br>
+            Here we split the main column using multiple prime divisors and graph the behavior by adding more information to visualize the evolution over time.
+        </p>
     </section>
     
     <section class="indice">
-        <h2>Índice</h2>
+        <h2>Index</h2>
         <ul>
-            <li><a href="#introduccion">Introducción</a></li>
-            <li><a href="#marco_teorico">Marco teorico</a></li>
+            <li><a href="#introduccion">Introduction</a></li>
+            <li><a href="#marco_teorico">Theoretical Framework</a></li>
             <ul>
-                <li><a href="#eca">Automata Celular Elemental</a></li>
-                <li><a href="#rule30">Regla 30</a></li>
+                <li><a href="#eca">Elementary Cellular Automaton</a></li>
+                <li><a href="#rule30">Rule 30</a></li>
             </ul>
-            <li><a href="#metodologia">Metodología</a></li>
+            <li><a href="#metodologia">Development</a></li>
             <ul>
-                <li><a href="#main_column">Extracción de la columna principal</a></li>
-                <li><a href="#divisores">Generación de divisores</a></li>
-                <li><a href="#histograma">Histogramas</a></li>
-                <li><a href="#evolutivo">Histograma evolutivo</a></li>
-                <li><a href="#metricas">Métricas</a></li>
+                <li><a href="#main_column">Main Column Extraction</a></li>
+                <li><a href="#divisores">Divisor Generation</a></li>
+                <li><a href="#histograma">Histograms</a></li>
+                <li><a href="#evolutivo">Evolutionary Histogram</a></li>
+                <li><a href="#metricas">Metrics</a></li>
             </ul>
-            <li><a href="#conclusiones">Conclusiones</a></li>
-            <li><a href="#referencias">Referencias</a></li>
+            <li><a href="#referencias">References</a></li>
         </ul>
     </section>
 
     <section id="introduccion" class="contenido">
-        <h2>Introducción</h2>
+        <h2>Introduction</h2>
         <p>
-            Los autómatas celulares (AC, de ahora en adelante, por su traducción al inglés: "Cellular Automaton") fueron concebidos por John Von 
-            Neumann en 1948 mientras buscaba diseñar un sistema capaz de auto-replicarse, es decir, un robot con la capacidad de construir otro 
-            robot. Las limitaciones físicas lo llevaron a seguir el consejo de Stanislaw Ulam, quien le sugirió diseñar un modelo matemático discreto 
-            con esta capacidad de auto-reproducción <a href="#referencias">[1]</a>.
+            Cellular Automata (CA, from now on) were conceived by John Von 
+            Neumann in 1948 while trying to design a system capable of self-replication, that is, a robot capable of building another 
+            robot. Physical limitations led him to follow the advice of Stanislaw Ulam, who suggested designing a discrete mathematical model 
+            with this self-reproduction capability <a href="#referencias">[1]</a>.
 
-            Los AC se definen como un conjunto de celdas o células que adquieren diferentes valores según la interacción que se produce entre ellas. 
-            Matemáticamente, un AC se describe mediante una 4-tupla:
+            CA are defined as a set of cells that acquire different values depending on the interaction between them. 
+            Mathematically, a CA is described by a 4-tuple:
         
             <center><p>\( CA=\{L,S,N,f\} \)</p></center>
 
-            Donde:
+            Where:
             <ul>
                 <li>
-                    <b>\(L\)</b>: Espacio dimensional. Define la dimensionalidad de una rejilla de células agrupadas. Este espacio es (teóricamente) 
-                    infinito
+                    <b>\(L\)</b>: Dimensional space. Defines the dimensionality of a grid of grouped cells. This space is (theoretically) 
+                    infinite.
                 </li>
                 <li>
-                    <b>\(S\)</b>: Conjunto finito de estados que puede adquirir cada célula dentro del espacio asignado.
+                    <b>\(S\)</b>: Finite set of states that each cell within the assigned space can take.
                 </li>
                 <li>
-                    <b>\(N\)</b>: Define las posiciones relativas de cada célula que formarán parte de la vecindad. El comportamiento de cada célula 
-                    depende de su vecindad.
+                    <b>\(N\)</b>: Defines the relative positions of each cell that will form part of the neighborhood. The behavior of each cell 
+                    depends on its neighborhood.
                 </li>
                 <li>
-                    <b><i>\(f:S^{[N]}\rightarrow S\) </i></b>: Función de transición. Determina el próximo valor de cada célula en función de los 
-                    valores de las células vecinas. Esta actualización se realiza de manera simultánea en cada periodo de tiempo discreto.
+                    <b><i>\(f:S^{[N]}\rightarrow S\) </i></b>: Transition function. Determines the next value of each cell based on the 
+                    values of the neighboring cells. This update is performed simultaneously at each discrete time step.
                 </li>
             </ul>
         
-            Estos sistemas han sido usados en el modelado de estaciones de metro<a href="#referencias">[2]</a>, comportamiento de plagas en ecosistemas
-            <a href="#referencias">[3]</a>, sistemas de mercado financiero <a href="#referencias">[4]</a> o en el análisis de comportamiento de 
-            células cancerígenas <a href="#referencias">[5]</a>. <br>
+            These systems have been used to model subway stations <a href="#referencias">[2]</a>, pest behavior in ecosystems
+            <a href="#referencias">[3]</a>, financial market systems <a href="#referencias">[4]</a>, or in the analysis of cancerous cell 
+            behavior <a href="#referencias">[5]</a>. <br>
         
-            Dos de los AC más conocidos son el Juego de la Vida, propuesto por John Conway, y el Autómata Celular Elemental, desarrollado por Stephen 
+            Two of the most well-known CA are the Game of Life, proposed by John Conway, and the Elementary Cellular Automaton, developed by Stephen 
             Wolfram.<br>
         
-            El Juego de la Vida de Conway consiste en un conjunto de células en un espacio bidimensional, un conjunto de estados binarios (vivo y 
-            muerto), una vecindad de Moore (las 8 células circundantes) y una función que define la vida o muerte de cada célula con base en la 
-            población viva de su vecindad <a href="#referencias">[6]</a>.<br>
+            Conway's Game of Life consists of a set of cells in a two-dimensional space, a set of binary states (alive and 
+            dead), a Moore neighborhood (the 8 surrounding cells), and a function that defines the life or death of each cell based on the 
+            living population of its neighborhood <a href="#referencias">[6]</a>.<br>
 
-            Por otro lado, el Autómata Celular Elemental es una colección de autómatas que comparten un espacio unidimensional, un conjunto de estados 
-            binarios y una vecindad de radio uno (la célula en cuestión y sus dos células vecinas más cercanas). Dichos autómatas se diferencian 
-            únicamente en la función de transición, que puede adoptar hasta 256 "reglas" o configuraciones diferentes 
+            On the other hand, the Elementary Cellular Automaton is a collection of automata that share a one-dimensional space, a set of binary 
+            states, and a neighborhood of radius one (the cell in question and its two closest neighbors). These automata differ 
+            only in the transition function, which can adopt up to 256 different "rules" or configurations 
             <a href="#referencias">[7]</a>.<br>
 
-            Una de estas reglas, conocida y patentada por Wolfram como Regla 30, presenta un comportamiento errático y aparentemente aleatorio. Si se 
-            inicia con una única célula viva, esta se expande en ambas direcciones con cada iteración, siendo capaz de llenar todo el espacio. Sin 
-            embargo, el comportamiento de la célula inicial no parece seguir un patrón discernible <a href="#referencias">[8]</a>. Ademas, no parece 
-            existir una tendencia de un estado sobre el otro.<br>
+            One of these rules, known and patented by Wolfram as Rule 30, shows erratic and seemingly random behavior. If it 
+            starts with a single live cell, it expands in both directions with each iteration, being capable of filling the entire space. However, 
+            the behavior of the initial cell does not seem to follow a discernible pattern <a href="#referencias">[8]</a>. Moreover, there doesn't 
+            appear to be a bias toward one state over the other.<br>
 
-            Por ello, en este reporte se propone un análisis estadístico sobre el primer millón de generaciones, esto con el objetivo de encontrar un 
-            patrón en la frecuencia de aparición de unos y ceros cada cierta segmentación.<br>
+            Therefore, this report proposes a statistical analysis over the first million generations, aiming to find a 
+            pattern in the frequency of occurrence of ones and zeros for certain segmentations.<br>
         </p>
     </section>
 
     <section id="marco_teorico" class="contenido">
-        <h2>Marco Teórico</h2>
+        <h2>Theoretical Framework</h2>
 
         <section id="eca" class="contenido">
-            <h3>Autómata Celular Elemental</h3>
+            <h3>Elementary Cellular Automaton</h3>
 
-            El autómata celular elemental (ECA, de ahora en adelante, por su traducción al inglés: "Elementary Cellular Automaton") se caracteriza por 
-            su simplificación de los autómatas celulares y su comportamiento divergente. <br>
+            The Elementary Cellular Automaton (ECA, from now on, for its English translation: "Elementary Cellular Automaton") is characterized by 
+            its simplification of cellular automata and its divergent behavior. <br>
 
-            Sus características principales son: <br>
+            Its main features are: <br>
             <ul>
                 <li>
-                    Una dimensión: \(L=1\). Es decir, las células están agrupadas en una línea infinita de forma consecutiva.
+                    One dimension: \(L=1\). That is, the cells are arranged in an infinite line consecutively.
 		        </li>
                 <li>
-            		Dos estados posibles por célula: <i>\(\{0,1\}\)</i>.  
+            		Two possible states per cell: <i>\(\{0,1\}\)</i>.  
                 </li>
                 <li>
-                    Vecindad local: La vecindad de cada célula se define por sí misma y sus dos vecinas más cercanas, también llamado radio 1. La 
-                    posición relativa está dada por <i>\(N=\{-1,0,1\}\)</i>.  
+                    Local neighborhood: Each cell’s neighborhood is defined by itself and its two closest neighbors, also known as radius 1. The 
+                    relative position is given by <i>\(N=\{-1,0,1\}\)</i>.  
                 </li>
                 <li>
-                    Funciones de transición: Dado que la vecindad está conformada por tres células y cada célula puede adquirir dos valores, existen 
-                    \(|S|^{|N|}=2^3=8\) combinaciones posibles de vecindad. Además, como cada combinación puede tener dos reglas de producción, es 
-                    decir, generar un 0 o un 1, existen \(|S|^{|S|^{|N|}} = 2^{2^3} = 2^8 = 256\) autómatas celulares diferentes.  
+                    Transition functions: Since the neighborhood is made up of three cells and each cell can take two values, there are 
+                    \(|S|^{|N|}=2^3=8\) possible neighborhood combinations. Furthermore, since each combination can have two production rules, that is, 
+                    produce either a 0 or a 1, there are \(|S|^{|S|^{|N|}} = 2^{2^3} = 2^8 = 256\) different cellular automata.  
                 </li>
             </ul>
 
-            A cada combinación de vecindad se le puede asociar un número binario determinado por el valor de cada célula. Dado que existen 8 
-            combinaciones, cada ECA se puede representar mediante un número binario de 8 dígitos, lo que, traducido a base decimal, adquiere 
-            un valor (y el nombre del ECA) entre 0 y 255. <br>
+            Each neighborhood combination can be associated with a binary number determined by the value of each cell. Since there are 8 
+            combinations, each ECA can be represented by an 8-digit binary number, which, translated to decimal, gives 
+            a value (and the name of the ECA) between 0 and 255. <br>
 
-            En la figura <a href="#fig1">1</a>, se muestra la configuración de la regla 210, que equivale a \(210_{10} = 11010010_2\) en base binaria. Las 
-            casillas negras representan los unos, y las blancas, los ceros.<br>
+            Figure <a href="#fig1">1</a> shows the configuration of rule 210, which equals \(210_{10} = 11010010_2\) in binary. The 
+            black boxes represent ones, and the white ones represent zeros.<br>
 
-            El resultado de dicha regla se muestra en la figura <a href="#fig2">2</a>. Se utiliza una segunda dimensión para representar el historial de 
-            la regla, aunque el comportamiento afecta únicamente la dimensión original.<br>
+            The result of this rule is shown in figure <a href="#fig2">2</a>. A second dimension is used to represent the rule's history, even though the behavior only affects the original dimension.<br>
         
             <section id="fig1" class="imagen">
-                <img src="./../img/eca1.png" alt="Descripción de la imagen">
-                <span class="pie">Figura 1: ECA 210</span>
+                <img src="./../img/eca1.png" alt="Image description">
+                <span class="pie">Figure 1: ECA 210</span>
             </section>
 
             <section id="fig2" class="imagen">
-                <img src="./../img/eca2.png" alt="Descripción de la imagen">
-                <span class="pie">Figura 2: Evolución del ECA 210</span>
+                <img src="./../img/eca2.png" alt="Image description">
+                <span class="pie">Figure 2: Evolution of ECA 210</span>
             </section>            
 
         </section>
 
         <section id="rule30" class="contenido">
-            <h3>Regla 30</h3>
+            <h3>Rule 30</h3>
 
-            La regla 30 equivale a \(30_{10}=00011110_2\) en binario. Dada una única célula con valor 1, esta se expande en ambas direcciones con cada 
-            iteración, como se muestra en las figuras <a href="#fig3">3</a> y <a href="#fig4">4</a>, que ilustran las primeras 23 y 900 generaciones, 
-            respectivamente. <br>
+            Rule 30 equals \(30_{10}=00011110_2\) in binary. Given a single cell with value 1, it expands in both directions with each 
+            iteration, as shown in figures <a href="#fig3">3</a> and <a href="#fig4">4</a>, which illustrate the first 23 and 900 generations, 
+            respectively. <br>
 	
-	        Como se observa en la figura <a href="#fig4">4</a>, existe un pequeño patrón repetitivo que crece de forma diagonal en el lado izquierdo del 
-            historial. Sin embargo, en el lado derecho, el comportamiento no parece tener estabilidad ni un patrón discernible. Si almacenamos el 
-            historial de los valores de la célula inicial, se obtiene una secuencia pseudoaleatoria. <br>
+	        As seen in figure <a href="#fig4">4</a>, there is a small repeating pattern growing diagonally on the left side of the 
+            history. However, on the right side, the behavior doesn't seem to have any stability or discernible pattern. If we store the 
+            history of the values of the initial cell, we obtain a pseudorandom sequence. <br>
 	
-	        Hasta el momento no se ha podido predecir directamente si el siguiente estado será 0 o 1, es posible calcularlo realizando todas las 
-            generaciones previas. <br>
+	        So far, it has not been possible to directly predict whether the next state will be 0 or 1; it can only be calculated by 
+            running all previous generations. <br>
         
             <section id="fig3" class="imagen">
-                <img src="./../img/r30_1.png" alt="Descripción de la imagen">
-                <span class="pie">Figura 3: Primeras 23 generaciones de la regla 30</span>
+                <img src="./../img/r30_1.png" alt="Image description">
+                <span class="pie">Figure 3: First 23 generations of rule 30</span>
             </section>
 
             <section id="fig4" class="imagen">
-                <img src="./../img/r30_2.png" alt="Descripción de la imagen">
-                <span class="pie">Figura 4: Primeras 900 generaciones de la regla 30</span>
+                <img src="./../img/r30_2.png" alt="Image description">
+                <span class="pie">Figure 4: First 900 generations of rule 30</span>
             </section>  
         
         </section>
-        
-    </section>
     
     <section id="metodologia" class="contenido">
-        <h2>Metodología</h2>
+        <h2>Development</h2>
     
         <section id="main_column" class="contenido">
-            <h3>Extracción de la columna principal</h3>
+            <h3>Main Column Extraction</h3>
             
-            Mediante la función del código <a href="#lst1">1</a>, se generan las primeras \(t\) generaciones de la regla 30 del ECA y se extrae, en formato de lista, el 
-            historial de la columna principal. Para las pruebas se extrajo un vector de \(t=5\) millones de generaciones.
-        
-            <section id="lst1" class="codigo">
-                <pre>column = CellularAutomaton[30, {{1}, 0}, {t, {{0}}}]</pre>
-                <span class="pie fun_ca">Código 1: Función extractora de la columna principal</span>
-            </section>
+            Using the code function <a href="#lst1">1</a>, the first \(t\) generations of Rule 30 of the ECA are generated, and the history of the main column is extracted in list format. For the tests, a vector of \(t=5\) million generations was extracted.
+
+<section id="lst1" class="codigo">
+<pre>column = CellularAutomaton[30, {{1}, 0}, {t, {{0}}}]</pre>
+<span class="pie fun_ca">Code 1: Main column extraction function</span>
+</section>
             
         </section>
         
+        
 
         <section id="divisores" class="contenido">
-            <h3>Generación de divisores</h3>
-
-            Se define un conjunto de divisores con la función <a href="#lst2">2</a>. Este se compone de los primeros 100 números naturales, junto con todos 
-            los números primos menores que la raíz cuadrada del total de generaciones. Es decir, todos los primos menores que \(\sqrt{5,000,000} = 2221\), 
-            lo que da un total de 406 divisores. <br>
-
-            Los números primos fueron elegidos por dos razones. La primera es que se busca reducir la complejidad computacional. La segunda se basa 
-            en el teorema fundamental de la aritmética, que establece que todo número puede expresarse como el producto de números primos. Esto 
-            implica que, si existe algún patrón en un número, dicho patrón también debería existir en sus componentes primarias. <br>
-
-            Finalmente, el límite de 2221 se define porque, para ese número, existe la misma cantidad de particiones que pueden realizarse en la 
-            columna principal. Cuanto mayor sea el divisor, menor será el número de particiones, lo que a su vez implica menos datos para el análisis.
-
+            <h3>Divisor Generation</h3>
+    
+            A set of divisors is defined with function <a href="#lst2">2</a>. This consists of the first 100 natural numbers, along with all the prime numbers less than the square root of the total generations. That is, all primes less than \(\sqrt{5,000,000} = 2221\), which gives a total of 406 divisors. <br>
+    
+            The prime numbers were chosen for two reasons. The first is to reduce computational complexity. The second is based on the fundamental theorem of arithmetic, which states that every number can be expressed as the product of prime numbers. This implies that, if there is a pattern in a number, such a pattern should also exist in its prime components. <br>
+    
+            Finally, the 2221 limit is defined because, for that number, there are as many partitions as can be made in the main column. The larger the divisor, the fewer the number of partitions, which in turn implies fewer data for analysis.
+    
 <section id="lst2" class="codigo">
 <pre>divisors=Join[
     Range[1, 100],
     Prime @ Range @ PrimePi[Sqrt[Length[column]]]
 ] // Sort</pre>
-<span class="pie fun_ca">Código 2: Selección de divisores</span>
+<span class="pie fun_ca">Code 2: Divisor selection</span>
 </section>
-
+    
         </section>
 
         <section id="histograma" class="contenido">
-            <h3>Histogramas</h3>
-
-            Para generar los histogramas, se siguen los siguientes pasos:
-
+            <h3>Histograms</h3>
+    
+            To generate the histograms, the following steps are followed:
+    
             <ul>
-                <li>Se selecciona un <i>divisor</i>.</li>
-                <li>Se particiona el vector de la columna principal en segmentos de tamaño <i>divisor</i>.</li>
-                <li>Se cuenta el número de unos en cada partición (Función <a href="#lst3">3</a>).</li>
-                <li>Se registran las frecuencias de todos los conteos realizados (Función <a href="#lst4">4</a>).</li>
+                <li>Select a <i>divisor</i>.</li>
+                <li>Partition the main column vector into segments of size <i>divisor</i>.</li>
+                <li>Count the number of ones in each partition (Function <a href="#lst3">3</a>).</li>
+                <li>Record the frequencies of all counts (Function <a href="#lst4">4</a>).</li>
             </ul>
-
+    
 <section id="lst3" class="codigo">
 <pre>Density = Function[{column, divisor},
     partitions = Partition[column, divisor];
     density = Table[
-       Count[partitions[[i]], 1], 
+        Count[partitions[[i]], 1], 
         {i, 1, Length[partitions]}
     ]
 ];</pre>
-<span class="pie fun_ca">Código 3: Partición y conteo</span>
+<span class="pie fun_ca">Code 3: Partition and count</span>
 </section> <br>
-
-
+    
 <section id="lst4" class="codigo">
 <pre>Frecuencies = Function[{column},
     unique = DeleteDuplicates[column];
@@ -278,58 +272,50 @@
         {i, 1, Length[unique]}
     ]
 ];</pre>
-<span class="pie fun_ca">Código 4: Selección de divisores</span>
-
+<span class="pie fun_ca">Code 4: Frequency recording</span>
+</section>
+    
+        </section>
+        
+        When plotting the points, a normal distribution of the frequencies can be inferred, as shown in figure <a href="#fig5_6">5</a>. 
+        In this case, a vector from the main column with 100,000 elements is used, partitioned into 10. On the other hand, in figure 
+        <a href="#fig5_6">6</a>, using a vector of the same size but partitioned into 500, a chaotic behavior is observed. <br>
+        
+        This difference could be due to the number of data points each partition works with. With partition sizes of 10, we get 
+        \(\frac{100,000}{10} = 10,000\) subvectors. In contrast, with partition sizes of 500, we get \(\frac{100,000}{500} = 200\) 
+        subvectors, 50 times fewer than in the first case. <br>
+        
+        To make an adequate comparison, ideally, more data should be used as the partition size increases, so that all generate the same number of subvectors. However, increasing the number of generations increases processing time. 
+        To avoid this, instead of increasing the size of the main column vector, a smaller vector is chosen and the aforementioned steps are repeated, but with different main vector sizes. <br>
+        
+        This new approach allows the analysis of the histogram behavior as the vector size increases.
+        
+<section id="fig5_6" class="imagen">
+<div class="imagen-contenedor">
+    <img src="./../img/test_1_10.png" alt="Image description">
+    <img src="./../img/test_1_500.png" alt="Image description">
+</div>
+<span class="pie">Figures 5 and 6: Histograms: 100,000 generations partitioned into 10 and 500</span>
 </section>
 
-            Al graficar los puntos, se puede intuir una distribución normal de las frecuencias, como se muestra en la figura <a href="#fig5_6">5</a>. 
-            En este caso, se utiliza un vector de la columna principal con 100,000 elementos, particionado en 10. Por otro lado, en la figura 
-            <a href="#fig5_6">6</a>, utilizando un vector del mismo tamaño pero particionado en 500, se observa un comportamiento caótico. <br>
-	
-            Esta diferencia podría deberse a la cantidad de datos con los que trabaja cada partición. Con particiones de tamaño 10, se obtienen 
-            \(\frac{100,000}{10} = 10,000\) subvectores. En cambio, con particiones de tamaño 500, se obtienen \(\frac{100,000}{500} = 200\) subvectores, 
-            50 veces menos que en el primer caso.  <br>
-            
-            Para realizar una comparación adecuada, lo ideal sería trabajar con más datos a medida que aumenta el tamaño de la partición, de modo que 
-            todas generen el mismo número de subvectores. Sin embargo, aumentar el número de generaciones incrementa el tiempo de procesamiento. 
-            Para evitar esto, en lugar de aumentar el tamaño del vector de la columna principal, se opta por dividirlo en un vector más pequeño y 
-            repetir los pasos mencionados, pero con diferentes tamaños del vector principal.  <br>
-            
-            Este nuevo enfoque permite analizar el comportamiento del histograma a medida que se incrementa el tamaño del vector.
-        
-            <section id="fig5_6" class="imagen">
-                <div class="imagen-contenedor">
-                    <img src="./../img/test_1_10.png" alt="Descripción de la imagen">
-                    <img src="./../img/test_1_500.png" alt="Descripción de la imagen">
-                </div>
-                <span class="pie">Figura 5 y 6: Histogramas: 100,000 generaciones particionada en 10 y 500</span>
-            </section>
+<section id="evolutivo" class="contenido">
+    <h3>Evolutionary Histogram</h3>
 
-            <section class="imagen">
-                
-            </section>  
-        
-        </section>
+    When implementing the evolutionary histograms, two additional parameters were added: the minimum vector size and the increment. These 
+    values help reduce the number of operations performed, since increasing the vector size one divisor at a time is impractical and not very useful. 
+    Also, not enough information is obtained by adding just one more data point. These values are generated and normalized 
+    using function <a href="#lst5">5</a>. <br>
 
-        <section id="evolutivo" class="contenido">
-            <h3>Histograma evolutivo</h3>
+    For the 5 million generations, an initial value of 1 million and an increment of 100,000 were chosen. This allows us to obtain  
+    \[
+    \frac{(5,000,000 - 1,000,000)}{100,000} + 1 = 41
+    \]  
+    samples over time. <br>
 
-            Al implementar los histogramas evolutivos, se añadieron dos parámetros adicionales: el tamaño mínimo del vector y el incremento. Estos 
-            valores sirven para reducir el número de operaciones realizadas, ya que resulta poco práctico y poco útil aumentar el tamaño del vector de 
-            divisor en divisor. Además, no se extrae suficiente información al obtener solo un dato más. Estos valores son generados y normalizados 
-            mediante la función <a href="#lst5">5</a>.  <br>
-	
-            Para las 5 millones de generaciones, se optó por un valor inicial de 1 millón y un incremento de 10,000. Esto nos permite obtener  
-            \[
-            \frac{(5,000,000 - 1,000,000)}{10,000} + 1 = 401
-            \]  
-            muestras a lo largo del tiempo.  <br>
-            
-            Para el divisor más grande (2221), la muestra inicial contiene  \(\frac{1,000,000}{2,221} = 450\) datos, mientras que cada muestra de 
-            tiempo adicional contiene  \(\frac{10,000}{2,221} = 4\) datos (solo se toma la parte entera), dando un total de 2251 datos.  <br>
-            
-            Finalmente, se utiliza la función <a href="#lst6">6</a>, que calcula los histogramas evolutivos para todos los divisores generados. Se 
-            ajusta el tamaño de cada incremento para que sea un múltiplo entero del divisor.  <br>
+    For the largest divisor (2221), the initial sample contains \(\frac{1,000,000}{2,221} = 450\) data points, while each additional time sample contains \(\frac{100,000}{2,221} = 40\) data points.<br>
+
+    Finally, function <a href="#lst6">6</a> is used to calculate the evolutionary histograms for all generated divisors. 
+    The size of each increment is adjusted to be an integer multiple of the divisor. <br>
 
 <section id="lst5" class="codigo">
 <pre>HistoricFrecuency = Function[
@@ -343,7 +329,7 @@
         {i, 1, Length[historic]}];
         historic
 ];</pre>
-<span class="pie fun_ca">Código 5: Calculo y normalización de frecuencias evolutivas</span>
+<span class="pie fun_ca">Code 5: Calculation and normalization of evolutionary frequencies</span>
 </section> <br>
 
 <section id="lst6" class="codigo">
@@ -360,17 +346,17 @@
         increment - Mod[increment, divisors[[i]]]]
     }, {i, 1, Length[divisors], 1}]
 ];</pre>
-<span class="pie fun_ca">Código 6: Calculo de todos los histogramas evolutivos</span>
+<span class="pie fun_ca">Code 6: Calculation of all evolutionary histograms</span>
 </section>
-        
-        </section>
 
-        <section id="metricas" class="contenido">
-            <h3>Métricas</h3>
+</section>
 
-            Por ultimo, se calculan ciertas métricas para todos los divisores y todas las muestras de cada divisor mediante la función 
-            <a href="#lst7">7</a>. Estos datos son: media, varianza, desviación estándar, asimetría y kurtosis. 
-        
+<section id="metricas" class="contenido">
+    <h3>Metrics</h3>
+
+    Finally, certain metrics are calculated for all divisors and all samples of each divisor using function 
+    <a href="#lst7">7</a>. These data points are: mean, variance, standard deviation, skewness, and kurtosis. 
+
 <section id="lst7" class="codigo">
 <pre>calculateStatistics[data_] := Module[{wd},
     wd = WeightedData[data[[All, 1]], data[[All, 2]]];
@@ -381,60 +367,107 @@
     "skewness" -> Skewness[wd],
     "kurtosis" -> Kurtosis[wd]|>
   ];</pre>
-<span class="pie fun_ca">Código 7: Calculos estadisticos</span>
+<span class="pie fun_ca">Code 7: Statistical calculations</span>
+</section>
+</section> 
 </section>
 
 
-        </section>
+<section class="resultados" class="resultados">
+    <h2>Results</h2>
+    
+    The following graphs represent the evolution of the evolutionary histograms of the first 100 integers and the next 306 prime numbers. <br>
 
-    </section>
+    For the first values, the distributions seem to be preserved regardless of the number of obtained elements, forming what appears to be a Gaussian bell curve.
+    <br>
+    For larger numbers, the initial histograms seem to have an almost random behavior, but as the size of the main column vector increases, the same behavior as with smaller numbers is acquired.
+    <br>
+    We could conclude that, at least for the data seen in this experiment, if the number of ones and zeros is not equivalent given a certain partition, then there could be a risk of analyzing too few data points.
+    Furthermore, the relationship between ones and zeros persists regardless of the partition or the size of the column considered.
+    <br><br>
+      <div class="gif-scroll-container">
+        <div class="gif-grid" id="gifGrid">
+          <!-- GIFs will be inserted here -->
+        </div>
+      </div>
+      <br><br>
+    To conclude this first part, the graphs of mean, standard deviation, variance, skewness, and kurtosis are obtained.
+    The X-axis represents the result in the number of iterations starting with 1,000,000 data points and increasing by 100,000 up to 5 million.
+    <br>
 
-    <section id="conclusiones" class="conclusiones">
-        <h2>Conclusiones</h2>
-        <p></p>
+    The graphs of skewness and kurtosis have erratic behavior in the smallest vectors but, as observed in the previous point,
+    this chaotic behavior depends on the amount of data, since the larger the iteration, the more stable it becomes.
+
+          <br><br>
+          <div class="gif-scroll-container">
+            <div class="gif-grid" id="gifGrid">
+                <img src="img/animations/mean.gif" alt="">
+                <img src="img/animations/standardDeviation.gif" alt="">
+                <img src="img/animations/variance.gif" alt="">
+                <img src="img/animations/skewness.gif" alt="">
+                <img src="img/animations/kurtosis.gif" alt="">
+            </div>
+          </div>
+
     </section>
     
     <section id="referencias" class="referencias">
-        <h2>Referencias</h2>
+        <h2>References</h2>
         <ol>
             <li>
-                M. G. Magaña Chávez. "Autómatas celulares elementales y sus composiciones". Motivos matemáticos / Matemáticas aplicadas. Accedido el 24 de diciembre de 2024. 
-                <a href="https://motivos.matem.unam.mx/vol6/num1/aplicadas1.html#:~:text=En%201948,%20el%20célebre%20matemático,de%20construir%20a%20otro%20robot" target="_blank">Disponible en línea</a>.
+                M. G. Magaña Chávez. "Autómatas celulares elementales y sus composiciones". Motivos matemáticos / Matemáticas aplicadas. Accessed on December 24, 2024. 
+                <a href="https://motivos.matem.unam.mx/vol6/num1/aplicadas1.html#:~:text=En%201948,%20el%20célebre%20matemático,de%20construir%20a%20otro%20robot" target="_blank">Available online</a>.
             </li>
             <li>
-                C. A. Rodríguez Garzón, "Modelamiento de estaciones TransMilenio mediante Autómatas Celulares: lecciones aprendidas", Ingeniería, vol. 19, n.º 2, diciembre de 2014. Accedido el 28 de diciembre de 2024. 
-                <a href="https://doi.org/10.14483/udistrital.jour.reving.2014.2.a05" target="_blank">Disponible en línea</a>.
+                C. A. Rodríguez Garzón, "Modelamiento de estaciones TransMilenio mediante Autómatas Celulares: lecciones aprendidas", Ingeniería, vol. 19, no. 2, December 2014. Accessed on December 28, 2024. 
+                <a href="https://doi.org/10.14483/udistrital.jour.reving.2014.2.a05" target="_blank">Available online</a>.
             </li>
             <li>
-                V. E. Barros Arenas y H. Gilabert P., "Modelación de la dinámica Plaga-Parasitoide-Bosque mediante autómatas celulares", Cienc. & Investig. For., vol. 14, n.º 2, pp. 311–323, julio de 2008. Accedido el 28 de diciembre de 2024. 
-                <a href="https://doi.org/10.52904/0718-4646.2008.292" target="_blank">Disponible en línea</a>.
+                V. E. Barros Arenas and H. Gilabert P., "Modelación de la dinámica Plaga-Parasitoide-Bosque mediante autómatas celulares", Cienc. & Investig. For., vol. 14, no. 2, pp. 311–323, July 2008. Accessed on December 28, 2024. 
+                <a href="https://doi.org/10.52904/0718-4646.2008.292" target="_blank">Available online</a>.
             </li>
             <li>
-                J. J. M. Martínez, "Modelo de autómatas celulares para la dinámica de un mercado financiero", Económica, pp. 46–94, diciembre de 2018. Accedido el 28 de diciembre de 2024. 
-                <a href="https://doi.org/10.24215/18521649e004" target="_blank">Disponible en línea</a>.
+                J. J. M. Martínez, "Modelo de autómatas celulares para la dinámica de un mercado financiero", Económica, pp. 46–94, December 2018. Accessed on December 28, 2024. 
+                <a href="https://doi.org/10.24215/18521649e004" target="_blank">Available online</a>.
             </li>
             <li>
-                T. Muñoz Jiménez, A. Torres Soto y M. D. Torres Soto, "Autómatas Celulares Aplicados al Comportamiento de Células de Cáncer Cervicouterino", Tecnol. Educ. Rev. CONAIC, vol. 6, n.º 1, pp. 44–49, enero de 2021. Accedido el 28 de diciembre de 2024. 
-                <a href="https://doi.org/10.32671/terc.v6i1.48" target="_blank">Disponible en línea</a>.
+                T. Muñoz Jiménez, A. Torres Soto and M. D. Torres Soto, "Autómatas Celulares Aplicados al Comportamiento de Células de Cáncer Cervicouterino", Tecnol. Educ. Rev. CONAIC, vol. 6, no. 1, pp. 44–49, January 2021. Accessed on December 28, 2024. 
+                <a href="https://doi.org/10.32671/terc.v6i1.48" target="_blank">Available online</a>.
             </li>
             <li>
-                "Conway's Game of Life - LifeWiki". Conway's Game of Life. Accedido el 25 de diciembre de 2024. 
-                <a href="https://conwaylife.com/wiki/Conway's_Game_of_Life" target="_blank">Disponible en línea</a>.
+                "Conway's Game of Life - LifeWiki". Conway's Game of Life. Accessed on December 25, 2024. 
+                <a href="https://conwaylife.com/wiki/Conway's_Game_of_Life" target="_blank">Available online</a>.
             </li>
             <li>
-                Wolfram Research, Inc. "Elementary Cellular Automaton". Wolfram MathWorld. Accedido el 28 de diciembre de 2024. 
-                <a href="https://mathworld.wolfram.com/ElementaryCellularAutomaton.html" target="_blank">Disponible en línea</a>.
+                Wolfram Research, Inc. "Elementary Cellular Automaton". Wolfram MathWorld. Accessed on December 28, 2024. 
+                <a href="https://mathworld.wolfram.com/ElementaryCellularAutomaton.html" target="_blank">Available online</a>.
             </li>
             <li>
-                Wolfram Research, Inc. "Rule 30". Wolfram MathWorld. Accedido el 28 de diciembre de 2024. 
-                <a href="https://mathworld.wolfram.com/Rule30.html" target="_blank">Disponible en línea</a>.
+                Wolfram Research, Inc. "Rule 30". Wolfram MathWorld. Accessed on December 28, 2024. 
+                <a href="https://mathworld.wolfram.com/Rule30.html" target="_blank">Available online</a>.
             </li>
         </ol>
     </section>
     
     
     <footer>
-        <p>&copy; 2025 Erick Jesse Angeles López. Todos los derechos reservados.</p>
+        <p>&copy; 2025 Erick Jesse Angeles López. All rights reserved.</p>
     </footer>
+
+
+    <script>
+        fetch('gifs.json')
+          .then(response => response.json())
+          .then(gifs => {
+            const grid = document.getElementById('gifGrid');
+            gifs.forEach(gif => {
+              const img = document.createElement('img');
+              img.src = gif;
+              img.alt = 'GIF';
+              grid.appendChild(img);
+            });
+          })
+          .catch(err => console.error('Error cargando gifs.json:', err));
+      </script>
 </body>
 </html>
